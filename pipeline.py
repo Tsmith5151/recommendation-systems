@@ -5,9 +5,12 @@ from os import environ
 from typing import List
 
 from parse import get_parser
-from recommender import similarity
 from recommender.database import utils as db_main
-from recommender.similarity import UserSimilarityMatrix, compute_weighted_matrix, rank_similar_users
+from recommender.similarity import (
+    UserSimilarityMatrix,
+    compute_weighted_matrix,
+    rank_similar_users,
+)
 from recommender import utils
 from recommender.utils import timer
 
@@ -48,7 +51,9 @@ class Pipeline:
         logging.info("Preprocessing Data...")
         self.data = utils.preprocess(self.data_raw)
 
-    def apply_similarity_calculation(self, name: str, features: List[str], metric: str) -> np.ndarray:
+    def apply_similarity_calculation(
+        self, name: str, features: List[str], metric: str
+    ) -> np.ndarray:
         """Compute User-Items Similarity Matrix
         Steps:
             - Construct User-Item Binary Vector for each input dataset
@@ -57,9 +62,9 @@ class Pipeline:
         """
         logging.info("=" * 50)
         logging.info(f"Computing USER-{name.upper()} Similarity Matrix...")
-        logging.info(f"Input Feautes: {features}")    
+        logging.info(f"Input Features: {features}")
         SM = UserSimilarityMatrix(self.data[name])
-        SM.get_user_item_matrix(self.data['max_users'],features)
+        SM.get_user_item_matrix(self.data["max_users"], features)
 
         logging.info(f"Applying Truncated SVD: Input Shape: {SM.matrix.shape}...")
         SM._truncatedSVD()
@@ -77,9 +82,9 @@ class Pipeline:
         logging.info("Computing Weighted Similarity Matrix...")
         return compute_weighted_matrix(i, a, c, weights)
 
-    def apply_user_ranking(self, df:pd.DataFrame) -> pd.DataFrame:
+    def apply_user_ranking(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rank Users based on Similarity Metric"""
-        logging.info('=' * 50)
+        logging.info("=" * 50)
         logging.info("Computing Weighted Similarity Matrix...")
         return rank_similar_users(df)
 
@@ -95,9 +100,15 @@ class Pipeline:
         self.apply_data_loader()
         self.data_summary(self.data_raw)
         self.apply_data_prep()
-        user_interest = self.apply_similarity_calculation("interest", ["tag"], self.metric)
-        user_assessment = self.apply_similarity_calculation("assessment", ["tag","score"], self.metric)
-        user_courses = self.apply_similarity_calculation("course_tags", ["tag","view"], self.metric)
+        user_interest = self.apply_similarity_calculation(
+            "interest", ["tag"], self.metric
+        )
+        user_assessment = self.apply_similarity_calculation(
+            "assessment", ["tag", "score"], self.metric
+        )
+        user_courses = self.apply_similarity_calculation(
+            "course_tags", ["tag", "view"], self.metric
+        )
         weighted_matrix = self.apply_weighted_similarity(
             user_interest, user_assessment, user_courses, self.weights
         )
