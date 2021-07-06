@@ -65,7 +65,30 @@ executed from a command line:
 python -m pipeline --env dev --results_table user_ranking
 ```
 
->**Note:** for a complete list of the input args and explanation, you can run
+The user recommender pipeline executes the following steps:
+1.) Load user interest, user assessment, user views, and course tags data from
+  the respected tables in a SQLite3 backend database. 
+2.) Apply Data Preprocessing
+  - Remove missing values
+  - Standardize column renaming
+  - Create and encode categorical features:
+    - Bin assessment scores into quantiles: high, medium, low
+    - Bin user content viewing time into quantiles: high, medium, low, very low
+    - Convert interest, course, and assessment raw tags to encodings 
+3.) Prepare a user-content matrix (e.g. users x feature) for each table. 
+4.) Compute pairwise cosine similarity for each table
+5.) Ensemble user, assessment, and course_tags tables  into one matrix (n_users
+    x n_users). Each table is assigned a weight in order to control which
+    table(s) are more influential when aggregating the three tables. 
+6.) Rank top 5 most similar users per each unique user id.
+7.) Write dataframe to a user ranking table in the SQLite3 database
+
+The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
+order to frequently update the user similarity ranking table. Current benchmark
+metrics for the pipeline to execute successfully with 10k users on a single
+8-core 16GB CPU machine is roughly 10 minutes. 
+
+>**Note:** for a complete list of the input args to execute the pipeline, you can run
 `python -m pipeline --help`. By default, the `env` argument is set to the
 development environment. For production purposes, the `prod` flag can be
 passed, however further configuration and database security features would need
@@ -141,6 +164,14 @@ ______
    the number of users, and their associated behavior, would be much larger.
    What considerations would you make to accommodate that?
 
-3. Given the context for which you might assume an API like this would be used,
-   is there anything else you would think about? (e.g. other data you would
-   like to collect)
+3.) Improvement to the API:
+- The current API returns a JSON payload containing only the user ID and
+score, which by default is the cosine similarity measurement. Future work
+for the application could consist of including additional meta data which
+would provide further context into explaining why the following users were
+recommended. Meta information could include tags, course IDs, assessment
+scores, and content viewing time. In the current scenario, the user ranking
+table is being overwritten with the results from the most recent run.
+Including a field such as a timestamp would also allow us to achieve 
+previous runs in the event we would like to examine how the recommender
+evolves over time for a given user.
