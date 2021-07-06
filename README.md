@@ -12,10 +12,6 @@ API. The endpoint will take a given user's unique ID and then return the top
 '5' most similar users. Here we will be using Flask-RESTful, which is just an
 extension for Flask that adds support for quickly building REST APIs in Python.
 In addition, the back-end database SQLite.
-
-The repository for this project can be cloned from on GitHub
-[here](https://github.com/Tsmith5151/user-recommender).
-
 _______
 ## Data Overview
 This document is accompanied by four csv files with the following tables:
