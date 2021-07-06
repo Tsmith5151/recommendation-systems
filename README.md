@@ -1,7 +1,7 @@
 # User Remmendation System
 ___________
 
-### Overview 
+## Overview 
 A sample of anonymized user data includes several variables representing users’
 selected interests as well as how they interact with courses and assessments.
 The objective is to leverage the dataset to calculate a score that represents
@@ -16,7 +16,8 @@ In addition, the back-end database SQLite.
 The repository for this project can be cloned from on GitHub
 [here](https://github.com/Tsmith5151/user-recommender).
 
-### Data Overview: 
+_______
+## Data Overview
 This document is accompanied by four csv files with the following tables:
 
 **user_assessment_scores**
@@ -47,7 +48,8 @@ roughly normal with mean of ~140 and a standard deviation of ~60
 - *date_followed*: the date this user followed/expressed interest in the tag
 mentioned above.
 
-### Getting Started:
+______
+## Getting Started
 
 Before getting started, the first step is to setup a virtual environment and
 install the required Python dependencies. To install the required libraries,
@@ -99,15 +101,17 @@ top `5` most similar users to the user of interest, the following CURL command
 can be run:
 
 ```
-curl -X GET -H "Content-type: application/json" -d "{\"user_handle\":\"110\"}" "http://0.0.0.0:5000/api/similarity/"
+curl -X GET -H "Content-type: application/json" \ 
+-d "{\"user_handle\":\"110\"}" \
+"http://0.0.0.0:5000/api/similarity/"
 ```
 
->**Note:** the user id for this example is `110`. Simply change the user id in
-the above GET request with a user id of interest. Keep in mind that the range
-of user ids is between 1 and 10000. 
+>**Note:** the user id for this example is `110`. Simply change the value of the 
+user_handle key the above body field `-d` with a user id of interest. Keep in mind 
+that the range of user ids is between 1 and 10000. 
 
 Alternatively to using curl for making an API call, a Python utility function
-was created to facilitate requesting similar users to the provided input user.
+was created to facilitate returning similar users to the provided input user id.
 The following command can be executed to return the same JSON object: 
 
 ```
@@ -128,7 +132,8 @@ python -m server.similarity --user_id 110
 }
 ```
 
-### Summary
+______
+## Summary
 
 1. Tell us about your similarity calculation and why you chose it.
 
