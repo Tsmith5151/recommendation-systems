@@ -99,9 +99,9 @@ order to frequently update the user similarity ranking table. Current benchmark
 metrics for the pipeline to execute successfully with 10k users on a single
 8-core 16GB CPU machine is roughly 10 minutes. 
 
->**Note:** for a complete list of the input args to execute the pipeline, you can run
-`python -m pipeline --help`. By default, the `env` argument is set to the
-development environment. For production purposes, the `prod` flag can be
+>**Note:** for a complete list of the input args to execute the pipeline, you
+can run `python -m pipeline --help`. By default, the `env` argument is set to
+the development environment. For production purposes, the `prod` flag can be 
 passed, however further configuration and database security features would need
 to be incorporated. 
 
@@ -169,11 +169,9 @@ python -m server.similarity --user_id 110
 ______
 ## Analysis and Future Work
 
-1. Tell us about your similarity calculation and why you chose it.
+1.) Similarity Calculation
 
-2. We have provided you with a relatively small sample of users. At true scale,
-   the number of users, and their associated behavior, would be much larger.
-   What considerations would you make to accommodate that?
+2.) Scalability 
 
 3.) Improvement to the API:
 - The current API returns a JSON payload containing only the user ID and
