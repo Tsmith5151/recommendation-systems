@@ -59,7 +59,7 @@ pip install -e requirements.txt
 python -m pipeline --env dev --results_table user_ranking
 ```
 
-*Set Environment Variables**
+**Set Environment Variables**
 
 ```
 export DATABASE_ENV=dev
