@@ -184,7 +184,7 @@ python -m server.similarity --user_id 110
 ______
 ## Analysis and Future Work
 
-1.) Similarity Calculation
+**1.) Similarity Calculation**
 
 The similarity metric utilized in the user-recommender application for pairwise
 comparison is `cosine`. This method computes the cosine of the angle between
@@ -221,7 +221,7 @@ compute. It would be recommended to explore other options such applying
 Alternating Least Square (ALS), in which the matrix factorization can computed
 in parallel. 
 
-2.) Scalability 
+**2.) Scalability**
 
 One thing to keep in mind when developing recommendation systems is
 scalability. In this application, the dataset is relatively small sample with
@@ -238,7 +238,7 @@ we could also convert the data preprocessing steps in `recommender/utils` to
 PySpark for additional parallelization. 
 
 
-3.) Improvement to the API:
+**3.) Improvement to the API**
 The current API returns a JSON payload containing only the user ID and score,
 which by default is the cosine similarity measurement. Future work for the
 application could consist of including additional meta data which would provide
