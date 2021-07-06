@@ -85,8 +85,7 @@ The user recommender pipeline executes the following steps:
 5.) Compute pairwise cosine similarity for each table
 
 6.) Ensemble user, assessment, and course_tags tables  into one matrix (n_users x n_users). 
-    - Each table is assigned a weight in order to control which
-    table(s) are more influential when aggregating the three tables. 
+- Each table is assigned a weight in order to control which table(s) are more influential when aggregating the three tables. 
     
 7.) Rank top 5 most similar users per each unique user id.
 
