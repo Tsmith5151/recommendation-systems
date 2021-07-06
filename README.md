@@ -111,8 +111,8 @@ user_handle key the above body field `-d` with a user id of interest. Keep in mi
 that the range of user ids is between 1 and 10000. 
 
 Alternatively to using curl for making an API call, a Python utility function
-was created to facilitate returning similar users to the provided input user id.
-The following command can be executed to return the same JSON object: 
+can also be used to facilitate returning similar users to the provided input user 
+id. The following command can be executed to return the same JSON object: 
 
 ```
 python -m server.similarity --user_id 110
