@@ -1,0 +1,13 @@
+dev:
+  database: recommender_dev
+  username: "admin"
+  pwd: ""
+  hostname: "0.0.0.0"
+  port: 8081
+
+prod:
+  database: recommender_prod
+  username: "admin"
+  pwd: ""
+  hostname: "0.0.0.0"
+  port: 8081
