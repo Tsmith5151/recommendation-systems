@@ -30,7 +30,7 @@ def get_parser() -> argparse:
         default=['0.50','0.30','0.20'],
         action='store',
         nargs="+",
-        help="Weights for similarity matrix: interest,assesssment,tags",
+        help="Weights for similarity matrix: interest,assessment,tags",
     )
     parser.add_argument(
         "--results_table",
