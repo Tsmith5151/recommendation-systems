@@ -83,3 +83,17 @@ def preprocess(data: dict) -> dict:
     return prep
 
 
+def timer(func):
+    """Wrapper for recording execution time"""
+
+    @functools.wraps(func)
+    def wrapper_time(*args, **kwargs):
+        start = time()
+        func(*args, **kwargs)
+        end = time()
+        elapsed_time = end - start
+        h, r = divmod(elapsed_time, 3600)
+        m, s = divmod(r, 60)
+        print(f"Elapsed Time: {h:.0f}H:{m:.0f}M:{s:.0f}s")
+
+    return wrapper_time
