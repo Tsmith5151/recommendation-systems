@@ -102,7 +102,7 @@ class Pipeline:
         weighted_matrix = self.apply_weighted_similarity(
             user_interest, user_assessment, user_courses, self.weights
         )
-        rank_matrix = self.apply_user_ranking(user_assessment)
+        rank_matrix = self.apply_user_ranking(weighted_matrix)
         self.save(rank_matrix)
         logging.info("Done!")
 
