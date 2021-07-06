@@ -201,9 +201,13 @@ ______
   find users that are similar to given user based on having similar
   interactions. These interactions involve user interests, course viewing
   details, and user assessment information. One drawback from using this
-  approach is that it will not scale to larger datasets. Collaborative
-  filtering methods also do not work well when a new user is added and has
-  minimal information (e.g. cold-start problem).
+  approach is that it will not scale to larger datasets. In order to compute
+  similarities, the entire dataset needs to be loaded into memory. One solution
+  would be to convert from a dense to a sparse matrix representation given that
+  many of the rows have zero entries. Using implementation `sparse.csr_matrix`
+  can be used as it's very memory efficient for storing sparse datasets.
+  Secondly, collaborative filtering methods also do not work well when a new
+  user is added and has minimal information (e.g. cold-start problem).
 
   One approach to help with scaling is applying matrix factorization (MF). This
   method helps decompose a high dimensional feature space into a set of latent
