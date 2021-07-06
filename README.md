@@ -115,6 +115,8 @@ python -m server.similarity --user_id 110
 ```
 
 **Output JSON**
+
+```json
 {
   "110": [
     "{'user': 5182, 'score': 0.4331}", 
@@ -124,6 +126,7 @@ python -m server.similarity --user_id 110
     "{'user': 2867, 'score': 0.3992}"
   ]
 }
+```
 
 ### Summary
 
