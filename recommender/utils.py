@@ -56,11 +56,11 @@ def preprocess(data: dict) -> dict:
 
         # discretize user assessment scores quantile buckets
         if any("score" in col for col in df.columns):
-            df["score"] = pd.qcut(df["score"], q=3, labels=["high", "medium", "bad"])
+            df["score"] = pd.qcut(df["score"], q=3, labels=["high", "medium", "low"])
 
         # discretize user viewing time into quantile buckets
         if any("view" in col for col in df.columns):
-            df["view"] = pd.qcut(df["view"], q=3, labels=["high", "medium", "bad"])
+            df["view"] = pd.qcut(df["view"], q=4, labels=["high", "medium", "low", "very low"])
 
         # encode categorical columns
         cat_cols = ["tag", "score", "view", "level"]
