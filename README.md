@@ -186,68 +186,67 @@ ______
 
 1.) Similarity Calculation
 
-- The similarity metric utilized in the user-recommender application for
-  pairwise comparison is `cosine`. This method computes the cosine of the angle
-  between two vectors that are projected in a multidimensional space. In our
-  case, dependant on the table, features are derived from the tags, assessment
-  scores, and experience level fields. These features are all categorical and
-  are encoded into unique indexes. Cosine Similarity is a value that is bound
-  by a constrained range of 0 and 1. For example, if two vectors are exactly
-  the same, the similarity between the two is 1. Therefore, the higher the
-  measurement between the two vectors, the more similar they are. 
+The similarity metric utilized in the user-recommender application for pairwise
+comparison is `cosine`. This method computes the cosine of the angle between
+two vectors that are projected in a multidimensional space. In our case,
+dependant on the table, features are derived from the tags, assessment scores,
+and experience level fields. These features are all categorical and are encoded
+into unique indexes. Cosine Similarity is a value that is bound by a
+constrained range of 0 and 1. For example, if two vectors are exactly the same,
+the similarity between the two is 1. Therefore, the higher the measurement
+between the two vectors, the more similar they are. 
 
-  The design of our user-recommender is a form of collaborative filtering. In
-  particular, the design is a user-item filtering approach where we attempt to
-  find users that are similar to given user based on having similar
-  interactions. These interactions involve user interests, course viewing
-  details, and user assessment information. One drawback from using this
-  approach is that it will not scale to larger datasets. In order to compute
-  similarities, the entire dataset needs to be loaded into memory. One solution
-  would be to convert from a dense to a sparse matrix representation given that
-  many of the rows have zero entries. Using implementation `sparse.csr_matrix`
-  can be used as it's very memory efficient for storing sparse datasets. There
-  would be minimal changes to the code as `sklearn.metrics.pairwise.cosine_similarity`
-  supports a using sparse matrix directly. Secondly, collaborative filtering
-  methods also do not work well when a new user is added and has minimal
-  information (e.g. cold-start problem).
+The design of our user-recommender is a form of collaborative filtering. In
+particular, the design is a user-item filtering approach where we attempt to
+find users that are similar to given user based on having similar interactions.
+These interactions involve user interests, course viewing details, and user
+assessment information. One drawback from using this approach is that it will
+not scale to larger datasets. In order to compute similarities, the entire
+dataset needs to be loaded into memory. One solution would be to convert from a
+dense to a sparse matrix representation given that many of the rows have zero
+entries. Using implementation `sparse.csr_matrix` can be used as it's very
+memory efficient for storing sparse datasets. There would be minimal changes to
+the code as `sklearn.metrics.pairwise.cosine_similarity` supports a using
+sparse matrix directly. Secondly, collaborative filtering methods also do not
+work well when a new user is added and has minimal information (e.g. cold-start
+problem).
 
-  One approach to help with scaling is applying matrix factorization (MF). This
-  method helps decompose a high dimensional feature space into a set of latent
-  features. One common MF method is Singular value decomposition (SVD). In our case,
-  truncatedSVD was applied and a minimum variance explained threshold parameter
-  was set to return a series of latent features with lower dimensions. One
-  observation to note at this stage is SVD can be very slow and expensive to
-  compute. It would be recommended to explore other options such applying
-  Alternating Least Square (ALS), in which the matrix factorization can
-  computed in parallel. 
+One approach to help with scaling is applying matrix factorization (MF). This
+method helps decompose a high dimensional feature space into a set of latent
+features. One common MF method is Singular value decomposition (SVD). In our
+case, truncatedSVD was applied and a minimum variance explained threshold
+parameter was set to return a series of latent features with lower dimensions.
+One observation to note at this stage is SVD can be very slow and expensive to
+compute. It would be recommended to explore other options such applying
+Alternating Least Square (ALS), in which the matrix factorization can computed
+in parallel. 
 
 2.) Scalability 
 
-- One thing to keep in mind when developing recommendation systems is
+One thing to keep in mind when developing recommendation systems is
 scalability. In this application, the dataset is relatively small sample with
 only 10k users. In practice, we could expect millions of users and the current
 design would need to be optimized. First, we could design a segmentation model
 to break-up computing a single monolithic pairwise similarity matrix. In other
 words, the first task could be to use the user/course attributes to create a
-set of features vectors, which are inputs into a clustering algorithm (e.g. K-Means)
-in order to segment similar users into 'k' clusters. Then we could apply a pairwise
-similarity metric for all customers assigned to a given cluster across
-multiple nodes. This approach allows the user similarity matrix to be
-constructed and results written to the data store in parallel. Moreover, we
-could also convert the data preprocessing steps in `recommender/utils` to
+set of features vectors, which are inputs into a clustering algorithm (e.g.
+K-Means) in order to segment similar users into 'k' clusters. Then we could
+apply a pairwise similarity metric for all customers assigned to a given
+cluster across multiple nodes. This approach allows the user similarity matrix
+to be constructed and results written to the data store in parallel. Moreover,
+we could also convert the data preprocessing steps in `recommender/utils` to
 PySpark for additional parallelization. 
 
 
 3.) Improvement to the API:
-- The current API returns a JSON payload containing only the user ID and score,
-  which by default is the cosine similarity measurement. Future work for the 
-  application could consist of including additional meta data which would
-  provide further context into explaining why the following users were
-  recommended. Meta information could include tags, course IDs, assessment
-  scores, and content viewing time. In the current scenario, the user ranking
-  table is being overwritten with the results from the most recent run.
-  Including a field such as a timestamp would also allow us to achieve
-  previous runs in the event we would like to examine how the recommender
-  evolves over time for a given user. Finally, if additional meta information
-  were to be included, a document based data store would be recommended for 
-  retrieving semi-structured data.
+The current API returns a JSON payload containing only the user ID and score,
+which by default is the cosine similarity measurement. Future work for the
+application could consist of including additional meta data which would provide
+further context into explaining why the following users were recommended. Meta
+information could include tags, course IDs, assessment scores, and content
+viewing time. In the current scenario, the user ranking table is being
+overwritten with the results from the most recent run.  Including a field such
+as a timestamp would also allow us to achieve previous runs in the event we
+would like to examine how the recommender evolves over time for a given user.
+Finally, if additional meta information were to be included, a document based
+data store would be recommended for retrieving semi-structured data.
