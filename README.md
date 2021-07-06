@@ -45,7 +45,7 @@ roughly normal with mean of ~140 and a standard deviation of ~60
 mentioned above.
 
 ______
-## Getting Started
+## Configure Environment 
 
 Before getting started, the first step is to setup a virtual environment and
 install the required Python dependencies. To install the required libraries,
@@ -55,7 +55,10 @@ run the following command:
 pip install -r requirements.txt
 ```
 
-Next, to run the `User-Similarity Pipeline`, the following command can be
+______
+## Run Recommendation Pipeline
+
+To run the `User-Similarity Pipeline`, the following command can be
 executed from a command line:
 
 ```
@@ -68,7 +71,8 @@ development environment. For production purposes, the `prod` flag can be
 passed, however further configuration and database security features would need
 to be incorporated. 
 
-**RESTful API**
+_______
+## RESTful API Service
 
  For this application, we will leverage
  [Flask-RESTful](https://flask-restful.readthedocs.io/en/latest/), which is an
@@ -129,7 +133,7 @@ python -m server.similarity --user_id 110
 ```
 
 ______
-## Summary
+## Analysis and Future Work
 
 1. Tell us about your similarity calculation and why you chose it.
 
