@@ -173,6 +173,20 @@ ______
 
 2.) Scalability 
 
+One thing to keep in mind when developing recommendation systems is
+scalability. In this application, the dataset is relatively small sample with
+only 10k users. In practice, we could expect millions of users and the current
+design would need to be optimized. First, we could design a segmentation model
+to break-up computing a single monolithic pairwise similarity matrix. In other
+words, the first task could be to use the user/course attributes to create a
+set of features vectors, which are inputs into a clustering algorithm (e.g. K-Means)
+in order to segment similar users into 'k' clusters. Then we could apply a pairwise
+similarity distance metric for all customers assigned to a given cluster across
+multiple nodes. This approach allows the user similarity matrix to be
+constructed and results written to the data store in parallel. Moreover, we
+could also convert the data preprocessing steps in `recommender/utils` to
+PySpark for additional parallelization. 
+
 3.) Improvement to the API:
 - The current API returns a JSON payload containing only the user ID and
 score, which by default is the cosine similarity measurement. Future work
