@@ -251,6 +251,7 @@ PySpark for additional parallelization.
 
 
 **3.) Improvement to the API**
+
 The current API returns a JSON payload containing only the user ID and score,
 which by default is the cosine similarity measurement. Future work for the
 application could consist of including additional meta data which would provide
