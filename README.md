@@ -173,7 +173,7 @@ ______
 
 2.) Scalability 
 
-One thing to keep in mind when developing recommendation systems is
+- One thing to keep in mind when developing recommendation systems is
 scalability. In this application, the dataset is relatively small sample with
 only 10k users. In practice, we could expect millions of users and the current
 design would need to be optimized. First, we could design a segmentation model
