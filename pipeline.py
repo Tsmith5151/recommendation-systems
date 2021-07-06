@@ -87,10 +87,8 @@ class Pipeline:
         """Write Output Data to Table in SQLite Database"""
         logging.info("=" * 50)
         logging.info("Updating similarity matrix in SQLite Database...")
-        df_results = pd.DataFrame(
-                results, columns=[i for i in range(1, self.data["max_users"]+1)]
-            )
-        db_main.write_table(self.env, self.output_table, df_results)
+        results.to_csv('matrix.csv',index=False)
+        db_main.write_table(self.env, self.output_table, results)
 
     @timer
     def run(self) -> None:
