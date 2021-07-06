@@ -16,6 +16,7 @@ class SimilarUsers:
     def fetch_user_from_db(self):
         """ Fetch User Record from SQLite Database"""
         query = f"select * from {TABLE} where user_handle = {self.user}"
+        print('Table',TABLE)
         return db_main.read_table(DATABASE_ENV, query)
 
     def get_payload(self):
@@ -33,8 +34,3 @@ def get_user_similarity():
     SU = SimilarUsers(user)
     results = SU.get_payload()
     return results
-
-
-# @app.errorhandler(500)
-# def index():
-#     return "Error with Flask Server", 500
