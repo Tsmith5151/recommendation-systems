@@ -49,26 +49,81 @@ mentioned above.
 
 ### Getting Started:
 
+Before getting started, the first step is to setup a virtual environment and
+install the required Python dependencies. To install the required libraries,
+run the following command:
+
 ```
-pip install -e requirements.txt
+pip install -r requirements.txt
 ```
 
-**Run User-Similarity Pipeline**
+Next, to run the `User-Similarity Pipeline`, the following command can be
+executed from a command line:
 
 ```
 python -m pipeline --env dev --results_table user_ranking
 ```
 
-**Set Environment Variables**
+>**Note:** for a complete list of the input args and explanation, you can run
+`python -m pipeline --help`. By default, the `env` argument is set to the
+development environment. For production purposes, the `prod` flag can be
+passed, however further configuration and database security features would need
+to be incorporated. 
 
+**RESTful API**
+
+ For this application, we will leverage
+ [Flask-RESTful](https://flask-restful.readthedocs.io/en/latest/), which is an
+ extension for Flask that adds support for quickly building REST APIs in
+ Python. Before running the Flask server, the following environment variables
+ for configuring the database environment and results table will need to be set:
+ 
 ```
 export DATABASE_ENV=dev
 export RESULTS_TABLE=user_ranking
 ```
 
+Once the above variables are set, we can then start Flask server by running the
+following command: 
+
 ```
 python -m runserver
 ```
+
+>**Note:** the default settings is to host the Flask server on localhost and
+listening on port 5000. To change this setting, you can modify `runserver.py`
+by setting the host and port arguments in the `app.run` method, respectively. 
+
+To make a API call to the hosted server and return a JSON object containing the
+top `5` most similar users to the user of interest, the following CURL command
+can be run:
+
+```
+curl -X GET -H "Content-type: application/json" -d "{\"user_handle\":\"110\"}" "http://0.0.0.0:5000/api/similarity/"
+```
+
+>**Note:** the user id for this example is `110`. Simply change the user id in
+the above GET request with a user id of interest. Keep in mind that the range
+of user ids is between 1 and 10000. 
+
+Alternatively to using curl for making an API call, a Python utility function
+was created to facilitate requesting similar users to the provided input user.
+The following command can be executed to return the same JSON object: 
+
+```
+python -m server.similarity --user_id 110
+```
+
+**Output JSON**
+{
+  "110": [
+    "{'user': 5182, 'score': 0.4331}", 
+    "{'user': 5029, 'score': 0.4159}", 
+    "{'user': 1133, 'score': 0.4083}", 
+    "{'user': 7477, 'score': 0.4043}", 
+    "{'user': 2867, 'score': 0.3992}"
+  ]
+}
 
 ### Summary
 
