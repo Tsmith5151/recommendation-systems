@@ -43,7 +43,7 @@ class UserSimilarityMatrix:
         logging.info(
             f"Total components {pc.n_components} with {ex_var:0.2f} variance explained"
         )
-        self.matrix= pc.transform(self.matrix)
+        self.matrix = pc.transform(self.matrix)
 
     def compute_similarity(self, metric: str = "cosine") -> np.ndarray:
         """Compute Similarity Matrix"""
@@ -52,10 +52,11 @@ class UserSimilarityMatrix:
             return 1 - score
         return score
 
+
 def compute_weighted_matrix(
     users: np.ndarray, assessments: np.ndarray, course: np.ndarray, weights: List[float]
 ) -> np.ndarray:
-    """Compute Weighted Similary Matrix where: weight_1 + weight_2 + weight_3 = 1"""
+    """Compute Weighted Similarity Matrix where: weight_1 + weight_2 + weight_3 = 1"""
     return (
         (users * float(weights[0]))
         + (assessments * float(weights[1]))
@@ -77,7 +78,7 @@ def rank_similar_users(X: np.ndarray, top_n: int = 5) -> pd.DataFrame:
         ]
 
     # dimensions: users x top_n
-    if isinstance(X,np.ndarray):
+    if isinstance(X, np.ndarray):
         X = pd.DataFrame(X)
     ranking = X.apply(custom_udf).T
     ranking.columns = [f"{i+1}" for i in ranking.columns]
