@@ -187,6 +187,7 @@ constructed and results written to the data store in parallel. Moreover, we
 could also convert the data preprocessing steps in `recommender/utils` to
 PySpark for additional parallelization. 
 
+
 3.) Improvement to the API:
 - The current API returns a JSON payload containing only the user ID and
 score, which by default is the cosine similarity measurement. Future work
