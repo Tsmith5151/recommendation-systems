@@ -16,7 +16,7 @@ _______
 ## Data Overview
 This document is accompanied by four csv files with the following tables:
 
-**user_interests**
+**user_interests:**
 
 | Keys                     | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |
@@ -25,7 +25,7 @@ This document is accompanied by four csv files with the following tables:
 | date_followed            | the date user followed/expressed interest in the tag field   |
 
 
-**user_assessment_scores**
+**user_assessment_scores:**
 
 
 | Keys                     | Description                                                                  |
@@ -36,7 +36,7 @@ This document is accompanied by four csv files with the following tables:
 | user_assessment_score    | the user’s score                                                             |
 
 
-**user_course_views**
+**user_course_views:**
 
 | Keys                     | Description                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------ |
@@ -48,7 +48,7 @@ This document is accompanied by four csv files with the following tables:
 | course_view_time_seconds | number of seconds this user spent watching per day                             |
 
 
-**course_tags**
+**course_tags:**
 
 | Keys              | Description                                                   |
 | ----------------- | ------------------------------------------------------------- |
