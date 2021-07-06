@@ -4,7 +4,7 @@ import argparse
 def get_parser() -> argparse:
     """Arguments for Machine Learning Pipeline"""
     parser = argparse.ArgumentParser(
-        description="PluralSight - Machine Learning Challenge"
+        description="User Recommendation Application"
     )
     parser.add_argument(
         "--data_path",
