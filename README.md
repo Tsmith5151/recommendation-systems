@@ -16,33 +16,45 @@ _______
 ## Data Overview
 This document is accompanied by four csv files with the following tables:
 
+**user_interests**
+
+| Keys                     | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| user_handle              | a unique identifier for each user                            | 
+| interest_tag             | the he date the user viewed the course                       |
+| date_followed            | the date user followed/expressed interest in the tag field   |
+
+
 **user_assessment_scores**
 
-- *user_handle*: a unique identifier for each user, consistent across tables 
-- *user_assessment_date*: the date the user completed this assessment
-- *assessment_tag*: the assessment tag (may or may not exactly match the
-user_interest or course_view tags)
-- *user_assessment_score*: the user’s score, from a distribution that is
-roughly normal with mean of ~140 and a standard deviation of ~60
+
+| Keys                     | Description                                                                  |
+| ------------------------ | ---------------------------------------------------------------------------- |
+| user_handle              | a unique identifier for each user                                            | 
+| user_assessment_date     | the date the user completed this assessment                                  |
+| assessment_tag           | the assessment tag                                                           |
+| user_assessment_score    | the user’s score                                                             |
+
 
 **user_course_views**
 
-- *user_handle*: a unique identifier for each user 
-- *view_date*: the date the user viewed the course
-- *course_name*: self-explanatory
-- *author_handle*: a unique identifier for each course’s author
-- *level*: the difficulty level assigned to this course
-- *course_view_time_seconds*: the number of seconds this user spent watching
- this course on this day
+| Keys                     | Description                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| user_handle              | a unique identifier for each user                                              | 
+| view_date                | the he date the user viewed the course                                         |
+| course_name              | name of course                                                                 |
+| author_handle            | a unique identifier for each course’s author                                   |
+| level                    | difficulty level assigned to this course                                       |
+| course_view_time_seconds | number of seconds this user spent watching per day                             |
+
 
 **course_tags**
 
-- *course_id*: course identifier for joining to user_course_views
-- *course_tags*: author-applied tags to define what topics this course covers
-- *user_handle*: a unique identifier for each user
-- *interest_tag*: tags this user has indicated they are interested in 
-- *date_followed*: the date this user followed/expressed interest in the tag
-mentioned above.
+| Keys              | Description                                                   |
+| ----------------- | ------------------------------------------------------------- |
+| course_id         | course identifier for joining to user_course_views            | 
+| course_tags       | author-applied tags to define what topics this course covers  |
+
 
 ______
 ## Configure Environment 
