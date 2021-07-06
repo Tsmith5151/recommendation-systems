@@ -66,22 +66,31 @@ python -m pipeline --env dev --results_table user_ranking
 ```
 
 The user recommender pipeline executes the following steps:
+
 1.) Load user interest, user assessment, user views, and course tags data from
   the respected tables in a SQLite3 backend database. 
+  
 2.) Apply Data Preprocessing
-  - Remove missing values
-  - Standardize column renaming
-  - Create and encode categorical features:
-    - Bin assessment scores into quantiles: high, medium, low
-    - Bin user content viewing time into quantiles: high, medium, low, very low
-    - Convert interest, course, and assessment raw tags to encodings 
+- Remove missing values
+- Standardize column renaming
+- Create and encode categorical features:
+   - Bin assessment scores into quantiles: high, medium, low
+   - Bin user content viewing time into quantiles: high, medium, low, very low
+   - Convert interest, course, and assessment raw tags to encodings 
+ 
 3.) Prepare a user-content matrix (e.g. users x feature) for each table. 
-4.) Compute pairwise cosine similarity for each table
-5.) Ensemble user, assessment, and course_tags tables  into one matrix (n_users
-    x n_users). Each table is assigned a weight in order to control which
+
+4.) Apply TruncatedSVD to reduce the high dimensionaly feature space to a set of lower dimensions that explains 90% of the total variance of the dataset. 
+
+5.) Compute pairwise cosine similarity for each table
+
+6.) Ensemble user, assessment, and course_tags tables  into one matrix (n_users x n_users). 
+    - Each table is assigned a weight in order to control which
     table(s) are more influential when aggregating the three tables. 
-6.) Rank top 5 most similar users per each unique user id.
-7.) Write dataframe to a user ranking table in the SQLite3 database
+    
+7.) Rank top 5 most similar users per each unique user id.
+
+8.) Write dataframe to a user ranking table in the SQLite3 database
 
 The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
 order to frequently update the user similarity ranking table. Current benchmark
