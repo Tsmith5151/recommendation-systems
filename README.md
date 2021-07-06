@@ -80,12 +80,15 @@ The user recommender pipeline executes the following steps:
  
 3.) Prepare a user-content matrix (e.g. users x feature) for each table. 
 
-4.) Apply TruncatedSVD to reduce the high dimensionaly feature space to a set of lower dimensions that explains 90% of the total variance of the dataset. 
+4.) Apply TruncatedSVD to reduce the high dimensionality feature space to a set
+of lower dimensions that explains 90% of the total variance of the dataset. 
 
 5.) Compute pairwise cosine similarity for each table
 
-6.) Ensemble user, assessment, and course_tags tables  into one matrix (n_users x n_users). 
-- Each table is assigned a weight in order to control which table(s) are more influential when aggregating the three tables. 
+6.) Ensemble user, assessment, and course_tags tables  into one matrix
+(n_users X n_users). 
+- Each table is assigned a weight in order to control which table(s) are more
+  influential when aggregating the three tables. 
     
 7.) Rank top 5 most similar users per each unique user id.
 
