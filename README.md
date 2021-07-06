@@ -79,7 +79,7 @@ The user recommender pipeline executes the following steps:
   - user_courses
   - course_tags
   
-2.) Apply Data Preprocessing
+2.) Apply data preprocessing.
 - Remove missing values
 - Standardize column renaming
 - Create and encode categorical features:
@@ -96,7 +96,7 @@ the dataset.
   include additional latent features. To reduced extra compute time for now,
   the variance threshold is set at 90%. 
 
-5.) Compute pairwise cosine similarity for each table
+5.) Compute pairwise cosine similarity for each table.
 
 6.) Ensemble user, assessment, and course_tags tables  into one matrix
 (n_users X n_users). 
@@ -108,7 +108,7 @@ the dataset.
     
 7.) Rank top 5 most similar users per each unique user id.
 
-8.) Write dataframe to a user ranking table in the SQLite3 database
+8.) Write dataframe to a user ranking table in the SQLite3 database.
 
 The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
 order to frequently update the user similarity ranking table. Current benchmark
