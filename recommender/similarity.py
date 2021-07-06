@@ -46,11 +46,8 @@ class UserSimilarityMatrix:
         self.matrix = pc.transform(self.matrix)
 
     def compute_similarity(self, metric: str = "cosine") -> np.ndarray:
-        """Compute Similarity Matrix"""
-        score = pairwise_distances(self.matrix, metric=metric)
-        if metric == "cosine":
-            return 1 - score
-        return score
+        """Compute Similarity"""
+        return pairwise_distances(self.matrix, metric=metric)
 
 
 def compute_weighted_matrix(
