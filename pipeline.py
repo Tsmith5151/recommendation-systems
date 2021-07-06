@@ -87,7 +87,6 @@ class Pipeline:
         """Write Output Data to Table in SQLite Database"""
         logging.info("=" * 50)
         logging.info("Updating similarity matrix in SQLite Database...")
-        results.to_csv('matrix.csv',index=False)
         db_main.write_table(self.env, self.output_table, results)
 
     @timer
