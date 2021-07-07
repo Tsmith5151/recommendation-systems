@@ -72,19 +72,18 @@ The required dependencies for the project can be installed by running:
 pip install -r requirements.txt
 ```
 
-Alternatively, [penv](https://github.com/pyenv/pyenv) can be installed and
-configured for managing Python versioning and virtual environments by running:
-
-```
-make penv
-```
-
-To install the required dependencies into the activated virtual environment you
-can run:
+A quick step to configure a virtual environment and handling Python versioning
+within this project is to simply run `make penv`. For more details on using
+pyenv, check out the docs [here](https://github.com/pyenv/pyenv). Assuming
+pyenv is now configured, you can then install the required dependencies into
+the activated virtual environment by running:
 
 ```
 make build-env
 ```
+
+______
+## Database 
 
 In terms of the backend database used for the application, `SQLite3` will be
 the default choice. For further details on installing the SQLite3 database, 
