@@ -2,16 +2,22 @@
 ___________
 
 ## Overview 
-A sample of anonymized user data includes several variables representing users’
-selected interests as well as how they interact with courses and assessments.
-The objective is to leverage the dataset to calculate a score that represents
-similarity between all active users. 
 
-The result from the recommender application can be accessible via a RESTful
-API. The endpoint will take a given user's unique ID and then return the top
-'5' most similar users. Here we will be using Flask-RESTful, which is just an
-extension for Flask that adds support for quickly building REST APIs in Python.
-In addition, the back-end database SQLite.
+The objective of this project is to build an recommendation system which
+returns a collection of users whom share similar profiles and interactions with
+a given user of interest. The dataset consists of anonymized user data captured
+from an online platform that includes features such as user interests,
+assessment scores, course viewing details, and tagged categories. 
+
+For this project, we will build a recommender system to first generate a
+user-item matrix to compute a pairwise similarity metric across all users and
+in return is utilized to rank the top users that are most similar to a given
+user. The result from the recommender application can be accessible via a RESTful
+API that is hosted locally (for now). The endpoint will take a given user's
+unique ID and then return the top '5' most similar users. For this project we
+will be using Flask-RESTful, which is just an extension for Flask that adds
+support for quickly building REST APIs in Python.
+
 _______
 ## Data Overview
 This document is accompanied by four csv files with the following tables:
@@ -57,19 +63,32 @@ This document is accompanied by four csv files with the following tables:
 
 
 ______
-## Configure Environment 
+## Requirements
+- Python 3.6+
 
-Before getting started, the first step is to setup a virtual environment and
-install the required Python dependencies. To install the required libraries,
-run the following command:
+The required dependencies for the project can be installed by running: 
 
 ```
 pip install -r requirements.txt
 ```
 
-The backend database used for the application is `SQLite3`. For further details
-on installing the SQLite3 database, please refer to the documentation
-[here](https://www.tutorialspoint.com/sqlite/sqlite_installation.htm).
+Alternatively, [penv](https://github.com/pyenv/pyenv) can be installed and
+configured for managing Python versioning and virtual environments by running:
+
+```
+make penv
+```
+
+To install the required dependencies into the activated virtual environment you
+can run:
+
+```
+make build-env
+```
+
+In terms of the backend database used for the application, `SQLite3` will be
+the default choice. For further details on installing the SQLite3 database, 
+please refer to the documentation [here](https://www.tutorialspoint.com/sqlite/sqlite_installation.htm).
 
 ______
 ## Run Recommendation Pipeline
