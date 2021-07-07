@@ -13,13 +13,13 @@ class SimilarUsers:
     def __init__(self, user: str):
         self.user = user
 
-    def fetch_user_from_db(self):
+    def fetch_user_from_db(self) -> pd.DataFrame:
         """Fetch User Record from SQLite Database"""
         query = f"select * from {TABLE} where user_handle = {self.user}"
         print("Table", TABLE)
         return db_main.read_table(DATABASE_ENV, query)
 
-    def get_payload(self):
+    def get_payload(self) -> json:
         """Return JSON Payload containing Input User and Top
         Similar Users with associated similarity scores"""
         data = self.fetch_user_from_db()

@@ -1,6 +1,5 @@
 import logging
 import functools
-import numpy as np
 import pandas as pd
 from time import time
 
@@ -12,10 +11,10 @@ logging.getLogger().setLevel(logging.INFO)
 def load_data(env: str) -> dict:
     """Load Users and Content Data from SQLite"""
 
-    df_course = db_main.read_table(env, f"select * from user_course_views")
-    df_asmt = db_main.read_table(env, f"select * from user_assessment_scores")
-    df_interest = db_main.read_table(env, f"select * from user_interests")
-    df_tags = db_main.read_table(env, f"select * from course_tags")
+    df_course = db_main.read_table(env, "select * from user_course_views")
+    df_asmt = db_main.read_table(env, "select * from user_assessment_scores")
+    df_interest = db_main.read_table(env, "select * from user_interests")
+    df_tags = db_main.read_table(env, "select * from course_tags")
 
     return {
         "course": df_course,
@@ -60,7 +59,9 @@ def preprocess(data: dict) -> dict:
 
         # discretize user viewing time into quantile buckets
         if any("view" in col for col in df.columns):
-            df["view"] = pd.qcut(df["view"], q=4, labels=["high", "medium", "low", "very low"])
+            df["view"] = pd.qcut(
+                df["view"], q=4, labels=["high", "medium", "low", "very low"]
+            )
 
         # encode categorical columns
         cat_cols = ["tag", "score", "view", "level"]

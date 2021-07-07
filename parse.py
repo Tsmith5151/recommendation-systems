@@ -3,9 +3,7 @@ import argparse
 
 def get_parser() -> argparse:
     """Arguments for Machine Learning Pipeline"""
-    parser = argparse.ArgumentParser(
-        description="User Recommendation Application"
-    )
+    parser = argparse.ArgumentParser(description="User Recommendation Application")
     parser.add_argument(
         "--data_path",
         default="data",
@@ -21,14 +19,14 @@ def get_parser() -> argparse:
     )
     parser.add_argument(
         "--similarity_metric",
-        default='cosine',
+        default="cosine",
         type=str,
         help="Similarity metric for pairwise distance measurement",
     )
     parser.add_argument(
         "--weights",
-        default=['0.50','0.30','0.20'],
-        action='store',
+        default=["0.50", "0.30", "0.20"],
+        action="store",
         nargs="+",
         help="Weights for similarity matrix: interest,assessment,tags",
     )

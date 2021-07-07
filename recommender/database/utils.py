@@ -3,7 +3,7 @@ import pandas as pd
 from .manager import DatabaseManager
 
 
-def create_ranking_table(env: str, table: str) -> None:
+def drop_table(env: str, table: str) -> None:
     """Drop Table from SQLite Database"""
     with DatabaseManager(env) as conn:
         sql_table = """DROP TABLE IF EXISTS {table}"""
@@ -49,7 +49,6 @@ def read_table(env: str, query: str) -> pd.DataFrame:
 def write_table(env: str, table: str, df: pd.DataFrame) -> None:
     """Write Table from SQLite Database"""
     with DatabaseManager(env) as conn:
-        cur = conn.cursor()
         df.to_sql(name=table, con=conn, if_exists="replace", index=False)
 
 
@@ -60,5 +59,4 @@ def ingest_raw_data(env: str, data_dir: str = "data"):
     for f in csv_files:
         df = pd.read_csv(os.path.join(data_dir, f))
         with DatabaseManager(env) as conn:
-            cur = conn.cursor()
             df.to_sql(name=f.split(".")[0], con=conn, if_exists="replace", index=False)

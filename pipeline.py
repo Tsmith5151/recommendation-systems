@@ -1,7 +1,6 @@
 import logging
 import numpy as np
 import pandas as pd
-from os import environ
 from typing import List
 
 from parse import get_parser
@@ -92,7 +91,7 @@ class Pipeline:
         """Write Output Data to Table in SQLite Database"""
         logging.info("=" * 50)
         logging.info("Updating similarity matrix in SQLite Database...")
-        #db_main.write_table(self.env, self.output_table, results)
+        db_main.write_table(self.env, self.output_table, results)
 
     @timer
     def run(self) -> None:
