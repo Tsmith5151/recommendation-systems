@@ -257,27 +257,28 @@ One thing to keep in mind when developing recommendation systems is
 scalability. In this application, the dataset is relatively small sample with
 only 10k users. In practice, we could expect millions of users and the current
 design would need to be optimized. First, we could design a segmentation model
-to break-up computing a single monolithic pairwise similarity matrix. In other
-words, the first task could be to use the user/course attributes to create a
-set of features vectors, which are inputs into a clustering algorithm (e.g.
-K-Means) in order to segment similar users into 'k' clusters. Then we could
-apply a pairwise similarity metric for all customers assigned to a given
-cluster across multiple nodes. This approach allows the user similarity matrix
-to be constructed and results written to the data store in parallel. Moreover,
-we could also convert the data preprocessing steps in `recommender/utils` to
-PySpark for additional parallelization. 
+to break-up computing a single monolithic pairwise similarity matrix across all
+users. In other words, we could leverage the user/course attributes to create
+a set of features vectors that are inputs into a clustering algorithm (e.g.
+K-Means) in order to further segment similar users into 'k' clusters (where each
+cluster contains `n_users` < `n_all_users`. The next step would then be to
+compute a pairwise similarity metric for users assigned to a given cluster in a
+parallelized fashion over multiple compute nodes. Moreover, we could also
+convert the data preprocessing steps in  `recommender/utils` to PySpark for 
+additional parallelization. 
 
 
 **3.) Improvement to the API**
 
 The current API returns a JSON payload containing only the user ID and score,
 which by default is the cosine similarity measurement. Future work for the
-application could consist of including additional meta data which would provide
+application could consist of including additional meta data that would provide
 further context into explaining why the following users were recommended. Meta
-information could include tags, course IDs, assessment scores, and content
+information could include tags, course IDs, assessment scores, and average content
 viewing time. In the current scenario, the user ranking table is being
 overwritten with the results from the most recent run.  Including a field such
-as a timestamp would also allow us to achieve previous runs in the event we
-would like to examine how the recommender evolves over time for a given user.
-Finally, if additional meta information were to be included, a document based
-data store would be recommended for retrieving semi-structured data.
+as a timestamp or a unique run id would also allow us to achieve previous runs 
+in the event we would like to examine how the recommender evolves over time for
+a given user in addition to performing A/B testing. Finally, if additional meta
+information were to be included, a document based data store would be
+recommended for retrieving semi-structured data.
