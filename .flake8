@@ -1,0 +1,5 @@
+[flake8]
+exclude = __init__.py
+per-file-ignores =
+	*.py: E501,E203,W503
+    **/*.py: E501,E203,W503
