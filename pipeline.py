@@ -84,7 +84,7 @@ class Pipeline:
     def apply_user_ranking(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rank Users based on Similarity Metric"""
         logging.info("=" * 50)
-        logging.info("Computing Weighted Similarity Matrix...")
+        logging.info("Ranking Similar Users...")
         return rank_similar_users(df)
 
     def save(self, results: pd.DataFrame) -> None:
