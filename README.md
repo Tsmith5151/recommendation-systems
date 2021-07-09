@@ -66,13 +66,21 @@ ______
 ## Requirements
 - Python 3.6+
 
-The required dependencies for the project can be installed by running: 
+For this project, we will be leveraging [poetry](https://python-poetry.org/)
+for our dependency manager. To get started, create a virtual environment and install poetry:
 
 ```
-pip install -r requirements.txt
+pip install poetry==1.1.7
 ```
 
-A quick step to configure a virtual environment and handling Python versioning
+Next, run the following command to install all dependencies from
+`pyproject.toml`: 
+
+```
+poetry install
+```
+
+> **Note:** A quick step to configure a virtual environment and handling Python versioning
 within this project is to simply run `make penv`. For more details on using
 pyenv, check out the docs [here](https://github.com/pyenv/pyenv). Assuming
 pyenv is now configured, you can then install the required dependencies into
