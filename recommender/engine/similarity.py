@@ -1,11 +1,12 @@
-import logging
 import numpy as np
 import pandas as pd
 from typing import List
 from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import pairwise_distances
 
-logging.getLogger().setLevel(logging.INFO)
+from recommender.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class UserSimilarityMatrix:
@@ -40,18 +41,21 @@ class UserSimilarityMatrix:
             pc.fit_transform(self.matrix)
             ex_var = np.sum(pc.explained_variance_ratio_)
             n_components += 1
-        logging.info(
+        logger.info(
             f"Total components {pc.n_components} with {ex_var:0.2f} variance explained"
         )
         self.matrix = pc.transform(self.matrix)
 
-    def compute_similarity(self, metric: str = "cosine") -> np.ndarray:
-        """Compute Similarity"""
-        return pairwise_distances(self.matrix, metric=metric)
+    def compute_similarity(self) -> np.ndarray:
+        """Compute Pairwise Cosine Distance Matrix"""
+        return 1 - pairwise_distances(self.matrix, metric="cosine")
 
 
 def compute_weighted_matrix(
-    users: np.ndarray, assessments: np.ndarray, course: np.ndarray, weights: List[float]
+    users: np.ndarray,
+    assessments: np.ndarray,
+    course: np.ndarray,
+    weights: List[float],
 ) -> np.ndarray:
     """Compute Weighted Similarity Matrix where: weight_1 + weight_2 + weight_3 = 1"""
     return (
@@ -80,5 +84,5 @@ def rank_similar_users(X: np.ndarray, top_n: int = 5) -> pd.DataFrame:
     ranking = X.apply(custom_udf).T
     ranking.columns = [f"{i+1}" for i in ranking.columns]
     ranking["user_handle"] = ranking.index
-    logging.info(f"User Ranking Dataframe Shape: {ranking.shape}")
+    logger.info(f"User Ranking Dataframe Shape: {ranking.shape}")
     return ranking

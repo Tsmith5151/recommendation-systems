@@ -1,7 +1,9 @@
 import os
 import yaml
 import sqlite3
-import logging
+from recommender.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class DatabaseManager:
@@ -20,10 +22,10 @@ class DatabaseManager:
             )
             return self.conn
         except Exception as e:
-            logging.critical(f"Error connecting to database: {str(e)}")
+            logger.critical(f"Error connecting to database: {str(e)}")
 
     def __exit__(self, e_type, e_val, _):
         try:
             self.conn.close()
         except Exception as e:
-            logging.critical(f"Error closing database: {str(e)}")
+            logger.critical(f"Error closing database: {str(e)}")

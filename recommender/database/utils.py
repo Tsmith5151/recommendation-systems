@@ -59,4 +59,9 @@ def ingest_raw_data(env: str, data_dir: str = "data"):
     for f in csv_files:
         df = pd.read_csv(os.path.join(data_dir, f))
         with DatabaseManager(env) as conn:
-            df.to_sql(name=f.split(".")[0], con=conn, if_exists="replace", index=False)
+            df.to_sql(
+                name=f.split(".")[0],
+                con=conn,
+                if_exists="replace",
+                index=False,
+            )

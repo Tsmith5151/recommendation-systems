@@ -1,11 +1,11 @@
-import logging
 import functools
 import pandas as pd
 from time import time
 
 from recommender.database import utils as db_main
+from recommender.logger import get_logger
 
-logging.getLogger().setLevel(logging.INFO)
+logger = get_logger(__name__)
 
 
 def load_data(env: str) -> dict:
@@ -27,11 +27,11 @@ def load_data(env: str) -> dict:
 def data_summary(data: dict):
     """Print Summary Metrics of Data"""
     for name, df in data.items():
-        logging.info(f"\nDataframe: {name.upper()} -- Shape: {df.shape}")
+        logger.info(f"\nDataframe: {name.upper()} -- Shape: {df.shape}")
         for c in df.columns:
             unique = len(df[c].unique())
             is_null = df[df[c].isnull()].shape[0]
-            logging.info(f"{c} -- Unique: {unique} -- Null: {is_null}")
+            logger.info(f"{c} -- Unique: {unique} -- Null: {is_null}")
     return
 
 
