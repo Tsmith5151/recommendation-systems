@@ -101,10 +101,10 @@ ______
 ## Run Recommendation Pipeline
 
 To run the `User-Similarity Pipeline`, the following command can be
-executed from a command line:
+executed from a command line within the project root dir:
 
 ```
-python -m pipeline --env dev --results_table user_ranking
+python -m recommender.pipeline --env dev --results_table user_ranking
 ```
 
 The user recommender pipeline executes the following steps:
@@ -154,7 +154,7 @@ metrics for the pipeline to execute successfully with 10k users on a single
 8-core 16GB CPU machine is roughly 10 minutes. 
 
 >**Note:** for a complete list of the input args to execute the pipeline, you
-can run `python -m pipeline --help`. By default, the `env` argument is set to
+can run `python -m recommender.pipeline --help`. By default, the `env` argument is set to
 the development environment. For production purposes, the `prod` flag can be 
 passed, however further configuration and database security features would need
 to be incorporated. 
@@ -177,7 +177,7 @@ Once the above variables are set, we can then start Flask server by running the
 following command: 
 
 ```
-python -m runserver
+python -m server.run
 ```
 
 >**Note:** the default settings is to host the Flask server on localhost and
@@ -203,7 +203,7 @@ can also be used to facilitate returning similar users to the provided input use
 id. The following command can be executed to return the same JSON object: 
 
 ```
-python -m server.similarity --user_id 110
+python -m server.api --user_id 110
 ```
 
 **Output JSON**
