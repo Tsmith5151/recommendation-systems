@@ -1,7 +1,7 @@
 import json
 import requests
 import flask
-from parse import get_parser
+from recommender.parse import get_parser
 
 
 def similarity(user_id: str, host: str = "0.0.0.0", port: int = 5000):
@@ -14,6 +14,7 @@ def similarity(user_id: str, host: str = "0.0.0.0", port: int = 5000):
     headers = {"content-type": "application/json", "Accept-Charset": "UTF-8"}
     response = requests.post(url, data=to_json, headers=headers)
     return response.text
+
 
 if __name__ == "__main__":
     args = get_parser().parse_args()

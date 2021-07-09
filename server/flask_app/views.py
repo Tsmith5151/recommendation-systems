@@ -16,7 +16,6 @@ class SimilarUsers:
     def fetch_user_from_db(self) -> pd.DataFrame:
         """Fetch User Record from SQLite Database"""
         query = f"select * from {TABLE} where user_handle = {self.user}"
-        print("Table", TABLE)
         return db_main.read_table(DATABASE_ENV, query)
 
     def get_payload(self) -> json:
@@ -24,9 +23,9 @@ class SimilarUsers:
         Similar Users with associated similarity scores"""
         data = self.fetch_user_from_db()
         if data.shape[0] == 0:
-            return {self.user_id: "No records found!"}
+            return json.dumps({self.user_id: "No records found!"})
         else:
-            return {str(self.user): list(data.loc[0].values.flatten()[:-1])}
+            return json.dumps({str(self.user): list(data.loc[0].values.flatten()[:-1])})
 
 
 @app.route("/api/similarity/", methods=["POST", "GET"])
