@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "user-recommender-system"
 version = "0.1.0"
-description = ""
+description = "Collaborative Filtering - User Recommender Application"
 authors = ["Trace Smith <tsmith5151@gmail.com>"]
 
 [tool.poetry.dependencies]
