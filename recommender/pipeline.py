@@ -3,17 +3,18 @@ import pandas as pd
 from typing import List
 
 from .parse import get_parser
-from recommender.database import utils as db_main
-from recommender.engine.similarity import (
+from .utils.tools import timer
+from .logger import get_logger
+from .utils import tools as util
+from .database import utils as db_main
+from .engine.similarity import (
     UserSimilarityMatrix,
     compute_weighted_matrix,
     rank_similar_users,
 )
-from recommender.utils import timer
-from recommender.utils import tools as util
 
-from .logger import get_logger
 logger = get_logger(__name__)
+
 
 class Pipeline:
     """Pipeline Class for Recommending Similar Users"""
