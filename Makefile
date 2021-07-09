@@ -3,12 +3,12 @@ PROJECT = 'user-recommender'
 
 SHELL := /bin/bash
 
-pep8:
-	poetry run black 
+format:
+	poetry run black .
 
 lint:
 	poetry run flake8
 
 precommits:
-	make pep8
+	make format
 	make lint
