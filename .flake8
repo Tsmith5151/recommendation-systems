@@ -2,8 +2,8 @@
 max-line-length = 88
 ignore = E501, E203, W503
 per-file-ignores =
-	./server/flask_app/__init__.py:E402,F401 
-	./server/flask_app/api.py:F401
+	./server/__init__.py:E402,F401 
+	./server/api.py:F401
 exclude =
     .git
     __pycache__
