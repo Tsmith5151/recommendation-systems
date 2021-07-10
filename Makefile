@@ -1,5 +1,5 @@
 PYTHON_VERSION=3.8.1
-PROJECT = 'user-recommender'
+PROJECT = 'user-recommendation-system'
 
 SHELL := /bin/bash
 
