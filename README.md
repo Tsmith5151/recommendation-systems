@@ -1,4 +1,5 @@
 # User Remmendation System
+![CI/CD Workflow](https://github.com/tsmith5151/user-recommender/actions/workflows/ci.yaml/badge.svg)
 ___________
 
 ## Overview 
