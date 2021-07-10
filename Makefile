@@ -3,12 +3,15 @@ PROJECT = 'user-recommender'
 
 SHELL := /bin/bash
 
+install:
+	poetry install 
+
 format:
 	poetry run black .
 
 lint:
 	poetry run flake8
 
-precommits:
+checks:
 	make format
 	make lint
