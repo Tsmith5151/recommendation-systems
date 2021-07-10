@@ -26,7 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies 
       run: | 
-        make Install
+        make install
     - name: Run Checks
       run: |
         make checks  
