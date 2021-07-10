@@ -4,6 +4,7 @@ PROJECT = 'user-recommendation-system'
 SHELL := /bin/bash
 
 install:
+	pip install poetry
 	poetry install 
 
 format:
