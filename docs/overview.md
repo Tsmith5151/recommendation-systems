@@ -104,47 +104,6 @@ executed from a command line within the project root dir:
 python -m recommender.pipeline --env dev --results_table user_ranking
 ```
 
-The user recommender pipeline executes the following steps:
-
-1.) Load user interest, user assessment, user views, and course tags data from
-  the respected tables in a SQLite3 backend database. 
-- Tables:
-  - user_interest
-  - user_assessment_scores
-  - user_courses
-  - course_tags
-  
-2.) Apply data preprocessing.
-- Remove missing values
-- Standardize column renaming
-- Create and encode categorical features:
-   - Bin assessment scores into quantiles: high, medium, low
-   - Bin user content viewing time into quantiles: high, medium, low, very low
-   - Convert interest, course, and assessment raw tags to encodings 
- 
-3.) Prepare a user-content matrix (e.g. users x feature) for each user/course table. 
-
-4.) Apply TruncatedSVD to reduce the high dimensionality feature space to a set
-latent features of lower dimensions that explains 90% of the total variance of
-the dataset. 
-- The explained variance threshold is tunable and can be increased to
-  include additional latent features. To reduced extra compute time for now,
-  the variance threshold is set at 90%. 
-
-5.) Compute pairwise cosine similarity for each table.
-
-6.) Ensemble user, assessment, and course_tags tables  into one matrix
-(n_users X n_users). 
-- Each table is assigned a weight in order to control which table(s) are more
-  influential when aggregating the three tables. 
-- If a user ID is not in the assessment or courses table, the corresponding
-  features will be zero for the user row. Therefore, the assessment or course
-  table will not have an influence in the user-similarity and ranking matrix. 
-    
-7.) Rank top 5 most similar users per each unique user id.
-
-8.) Write dataframe to a user ranking table in the SQLite3 database.
-
 The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
 order to frequently update the user similarity ranking table. Current benchmark
 metrics for the pipeline to execute successfully with 10k users on a single
@@ -155,6 +114,55 @@ can run `python -m recommender.pipeline --help`. By default, the `env` argument 
 the development environment. For production purposes, the `prod` flag can be 
 passed, however further configuration and database security features would need
 to be incorporated. 
+
+### Pipeline Stages
+
+The user recommender pipeline executes the following steps:
+
+**1.) Load data**
+- Load user interest, user assessment, user views, and course tags data from
+  the respected tables in a SQLite3 backend database. 
+- Tables:
+  - user_interest
+  - user_assessment_scores
+  - user_courses
+  - course_tags
+  
+**2.) Apply data preprocessing.**
+- Remove missing values
+- Standardize column renaming
+- Create and encode categorical features:
+   - Bin assessment scores into quantiles: high, medium, low
+   - Bin user content viewing time into quantiles: high, medium, low, very low
+   - Convert interest, course, and assessment raw tags to encodings 
+ 
+**3.) Prepare a user-item matrix**
+- Generate a user x feature matrix for each user/course table. 
+
+**4.) Dimensionality Reduction** 
+- Apply TruncatedSVD to reduce the high dimensionality feature space
+- Reduce to a set latent features that explains 90% of the total variance.
+- The explained variance threshold is tunable and can be increased to
+  include additional latent features. To reduced extra compute time for now,
+  the variance threshold is set at 90%. 
+
+**5.) Compute Pairwise Distance**
+- Compute pairwise cosine similarity for each table.
+
+**6.) Aggregate Matrices**
+- Ensemble user, assessment, and course_tags tables  into one matrix (n_users X n_users). 
+- Each table is assigned a weight in order to control which table(s) are more
+  influential when aggregating the three tables. 
+- If a user ID is not in the assessment or courses table, the corresponding
+  features will be zero for the user row. Therefore, the assessment or course
+  table will not have an influence in the user-similarity and ranking matrix. 
+    
+**7.) Rank Users**
+- Generate top 5 most similar users per each unique user id.
+
+**8.) Write Results**
+- Write output results to `user_ranking` table in the SQLite3 database.
+
 
 _______
 ## RESTful API
