@@ -1,10 +1,11 @@
-import os
 import json
 import pandas as pd
 from server import app
 from flask import request
 from recommender.database import utils as db_main
 
+# Environment Variable
+# import os
 DATABASE_ENV = "dev"  # os.environ["DATABASE_ENV"]
 TABLE = "user_ranking"  # os.environ["RESULTS_TABLE"]
 
