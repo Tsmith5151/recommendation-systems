@@ -1,0 +1,11 @@
+m2r2==0.2.8
+Sphinx==4.0.3
+sphinx-autobuild==2021.3.14
+sphinx-rtd-theme==0.5.2
+sphinx-server==0.1.0
+sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-htmlhelp==2.0.0
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.3
+sphinxcontrib-serializinghtml==1.1.5

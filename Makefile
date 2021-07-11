@@ -1,21 +1,23 @@
-PYTHON_VERSION=3.8.1
 PROJECT = 'user-recommendation-system'
-
 SHELL := /bin/bash
 EXEC := poetry run
+SPHINX_AUTO_EXTRA:=
 
 install:
 	pip install poetry
 	poetry install 
 
 format:
-	${EXEC} black .
+	@${EXEC} black .
 
 format-check:
-	${EXEC} black . --check
+	@${EXEC} black . --check
 
 lint:
-	${EXEC} flake8
+	@${EXEC} flake8 .
+
+doc:
+	@${EXEC} sphinx-autobuild -b html docs docs/build/htm ${SPHINX_AUTO_EXTRA}
 
 checks:
 	make format-check

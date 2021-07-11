@@ -17,7 +17,17 @@ logger = get_logger(__name__)
 
 
 class Pipeline:
-    """Pipeline Class for Recommending Similar Users"""
+    """Pipeline Class for Recommending Similar Users
+
+    Parameters
+    ----------
+    env: str
+        environment for which database credentials to inherit
+    weights: List
+        List of weights for applying to similarity matrix
+    outout_table: str
+        Name of output table to write results to SQLite3 Database
+    """
 
     def __init__(
         self,
@@ -33,17 +43,34 @@ class Pipeline:
         return """ Pipeline for Generating User Similarities"""
 
     def data_summary(self, data: dict):
-        """Summary of Users/Assessments/Courses/Tags Data"""
+        """Summary of Users/Assessments/Courses/Tags Data
+
+        Parameters
+        ----------
+        data: dict
+            Input dictionary containing dataframes for course,
+            assessment, interest, and tags, respectively.
+        """
         util.data_summary(data)
 
     def apply_data_loader(self) -> None:
-        """Load Users/Assessments/Course/Tags Data"""
+        """Load Users/Assessments/Course/Tags Data
+
+        Parameters
+        ----------
+        None
+        """
         logger.info("=" * 100)
         logger.info("Loading Data...")
         self.data_raw = util.load_data(self.env)
 
     def apply_data_prep(self):
-        """Preprocess Raw Data"""
+        """Preprocess Raw Data
+
+        Parameters
+        ----------
+        None
+        """
         logger.info("=" * 100)
         logger.info("Preprocessing Data...")
         self.data = util.preprocess(self.data_raw)
@@ -53,9 +80,16 @@ class Pipeline:
     ) -> np.ndarray:
         """Compute User-Items Similarity Matrix
         Steps:
-            - Construct User-Item Binary Vector for each input dataset
-            - Apply truncatedSVD to determine 'n' components to explain m% of total variance
-            - Compute cosine similarity
+        1.) Construct User-Item Binary Vector for each input dataset
+        2.) Apply truncatedSVD to determine 'n' components to explain m% of total variance
+        3.) Compute cosine similarity
+
+        Parameters
+        ----------
+        name: str
+            maximum number of users for creating user-matrix matrix dimensions
+        features: List[str]
+            List of features columns for creating user-items matrix
         """
         logger.info("=" * 100)
         logger.info(f"Computing USER-{name.upper()} Similarity Matrix...")
@@ -72,26 +106,55 @@ class Pipeline:
     def apply_weighted_similarity(
         self, i: np.ndarray, a: np.ndarray, c: np.ndarray, weights: List[float]
     ) -> np.ndarray:
-        """Compute Interest/Assessment/Courses Weighted Matrix"""
+        """Compute Interest/Assessment/Courses Weighted Matrix
+
+        Parameters
+        ----------
+        i: str
+            input user similarity matrix
+        a: List[str]
+            input assessment similarity matrix
+        c: List[str]
+            input course similarity matrix
+        weights: List[str]
+            input list of weights associated with each matrix
+        """
         logger.info("=" * 100)
         logger.info("Computing Weighted Similarity Matrix...")
         return compute_weighted_matrix(i, a, c, weights)
 
     def apply_user_ranking(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Rank Users based on Similarity Distance Metric"""
+        """Rank Users based on Similarity Distance Metric
+
+        Parameters
+        ----------
+        df: np.ndarray
+            input dataframe
+        """
         logger.info("=" * 100)
         logger.info("Ranking similar users...")
         return rank_similar_users(df)
 
     def save(self, results: pd.DataFrame) -> None:
-        """Write Output Data to Table in SQLite Database"""
+        """Write Output Data to Table in SQLite Database
+
+        Parameters
+        ----------
+        df: np.ndarray
+            input dataframe
+        """
         logger.info("=" * 100)
         logger.info("Updating similarity matrix in SQLite Database...")
         db_main.write_table(self.env, self.output_table, results)
 
     @timer
     def run(self) -> None:
-        """Main method for generating user x content matrix"""
+        """Main method for generating user x content matrix
+
+        Parameters
+        ----------
+        None
+        """
         self.apply_data_loader()
         self.data_summary(self.data_raw)
         self.apply_data_prep()
