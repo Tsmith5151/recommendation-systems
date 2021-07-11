@@ -5,11 +5,11 @@ from .manager import DatabaseManager
 
 def drop_table(env: str, table: str) -> None:
     """Drop Table from SQLite Database
-    
+
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     table: str
         name of sql table to drop
     """
@@ -21,11 +21,11 @@ def drop_table(env: str, table: str) -> None:
 
 def create_ranking_table(env: str, table: str, top_n: int) -> None:
     """Query User Similarity Table for SQLite Database
-    
+
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     table: str
         name of sql table create
     top_n: int
@@ -45,14 +45,14 @@ def create_ranking_table_index(
     env: str, table: str, user_alias: str = "user_handle"
 ) -> None:
     """Create Index on User in the Similarity Table for optimal query
-performance
-    
-    Parameters
-    ----------
-    env: str
-        environment for which database credentials to inherit 
-    table: str
-        name of sql table to index
+    performance
+
+        Parameters
+        ----------
+        env: str
+            environment for which database credentials to inherit
+        table: str
+            name of sql table to index
     """
     with DatabaseManager(env) as conn:
         sql_table = (
@@ -68,7 +68,7 @@ def read_table(env: str, query: str) -> pd.DataFrame:
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     query: str
         sql query for reading data from SQLite3 database
     """
@@ -83,13 +83,13 @@ def read_table(env: str, query: str) -> pd.DataFrame:
 
 def write_table(env: str, table: str, df: pd.DataFrame) -> None:
     """Write Table from SQLite Database
-    
+
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     table: str
-        name of table to write results to 
+        name of table to write results to
     df: pd.DataFrame
         dataframe to write to SQLite3 database
     """
@@ -99,13 +99,13 @@ def write_table(env: str, table: str, df: pd.DataFrame) -> None:
 
 def ingest_raw_data(env: str, data_dir: str = "data"):
     """Write .csv raw files to SQLite Database
-    
+
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     data_dir: str
-        path to read data from local filesystem 
+        path to read data from local filesystem
     """
 
     csv_files = [i for i in os.listdir("data") if ".csv" in i]

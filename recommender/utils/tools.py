@@ -10,11 +10,11 @@ logger = get_logger(__name__)
 
 def load_data(env: str) -> dict:
     """Load Users and Content Data from SQLite
-    
+
     Parameters
     ----------
     env: str
-        Environment for which database credentials to inherit 
+        Environment for which database credentials to inherit
     """
     df_course = db_main.read_table(env, "select * from user_course_views")
     df_asmt = db_main.read_table(env, "select * from user_assessment_scores")
@@ -31,12 +31,12 @@ def load_data(env: str) -> dict:
 
 def data_summary(data: dict):
     """Print Summary Metrics of Data
-    
+
     Parameters
     ----------
     data: dict
         Input dictionary containing dataframes for course,
-        assessment, interest, and tags, respectively. 
+        assessment, interest, and tags, respectively.
     """
     for name, df in data.items():
         logger.info(f"\nDataframe: {name.upper()} -- Shape: {df.shape}")
@@ -50,13 +50,13 @@ def data_summary(data: dict):
 def preprocess(data: dict) -> dict:
     """Apply series of perprocessing steps such as
     renaming columns and encoding categorical variables
-    for each dataframe. 
+    for each dataframe.
 
     Parameters
     ----------
     data: data
         Input dictionary containing dataframes for course,
-        assessment, interest, and tags, respectively. 
+        assessment, interest, and tags, respectively.
     """
 
     prep = {}

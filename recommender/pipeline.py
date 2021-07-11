@@ -18,11 +18,11 @@ logger = get_logger(__name__)
 
 class Pipeline:
     """Pipeline Class for Recommending Similar Users
-    
+
     Parameters
     ----------
     env: str
-        environment for which database credentials to inherit 
+        environment for which database credentials to inherit
     weights: List
         List of weights for applying to similarity matrix
     outout_table: str
@@ -44,18 +44,18 @@ class Pipeline:
 
     def data_summary(self, data: dict):
         """Summary of Users/Assessments/Courses/Tags Data
-        
+
         Parameters
         ----------
         data: dict
             Input dictionary containing dataframes for course,
-            assessment, interest, and tags, respectively. 
+            assessment, interest, and tags, respectively.
         """
         util.data_summary(data)
 
     def apply_data_loader(self) -> None:
         """Load Users/Assessments/Course/Tags Data
-        
+
         Parameters
         ----------
         None
@@ -66,7 +66,7 @@ class Pipeline:
 
     def apply_data_prep(self):
         """Preprocess Raw Data
-        
+
         Parameters
         ----------
         None
@@ -107,17 +107,17 @@ class Pipeline:
         self, i: np.ndarray, a: np.ndarray, c: np.ndarray, weights: List[float]
     ) -> np.ndarray:
         """Compute Interest/Assessment/Courses Weighted Matrix
-        
+
         Parameters
         ----------
         i: str
-            input user similarity matrix 
+            input user similarity matrix
         a: List[str]
-            input assessment similarity matrix 
+            input assessment similarity matrix
         c: List[str]
-            input course similarity matrix 
+            input course similarity matrix
         weights: List[str]
-            input list of weights associated with each matrix 
+            input list of weights associated with each matrix
         """
         logger.info("=" * 100)
         logger.info("Computing Weighted Similarity Matrix...")
@@ -125,7 +125,7 @@ class Pipeline:
 
     def apply_user_ranking(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rank Users based on Similarity Distance Metric
-        
+
         Parameters
         ----------
         df: np.ndarray
@@ -137,7 +137,7 @@ class Pipeline:
 
     def save(self, results: pd.DataFrame) -> None:
         """Write Output Data to Table in SQLite Database
-        
+
         Parameters
         ----------
         df: np.ndarray
@@ -150,7 +150,7 @@ class Pipeline:
     @timer
     def run(self) -> None:
         """Main method for generating user x content matrix
-        
+
         Parameters
         ----------
         None

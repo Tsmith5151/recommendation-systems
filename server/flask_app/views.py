@@ -5,8 +5,8 @@ from server import app
 from flask import request
 from recommender.database import utils as db_main
 
-DATABASE_ENV = "dev" #os.environ["DATABASE_ENV"]
-TABLE = "user_ranking" #os.environ["RESULTS_TABLE"]
+DATABASE_ENV = "dev"  # os.environ["DATABASE_ENV"]
+TABLE = "user_ranking"  # os.environ["RESULTS_TABLE"]
 
 
 class SimilarUsers:
@@ -15,7 +15,7 @@ class SimilarUsers:
 
     def fetch_user_from_db(self) -> pd.DataFrame:
         """Fetch User Record from SQLite Database
-        
+
         Parameters
         ----------
         None
@@ -26,7 +26,7 @@ class SimilarUsers:
     def get_payload(self) -> json:
         """Return JSON Payload containing Input User and Top
         Similar Users with associated similarity scores
-        
+
         Parameters
         ----------
         None

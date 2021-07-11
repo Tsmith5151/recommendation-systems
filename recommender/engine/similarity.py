@@ -14,7 +14,7 @@ class UserSimilarityMatrix:
 
     def __init__(self, data: pd.DataFrame):
         """
-        Generate user-user similarity metrics 
+        Generate user-user similarity metrics
 
         Parameters
         ----------
@@ -43,7 +43,7 @@ class UserSimilarityMatrix:
 
     def get_user_item_matrix(self, max_users: int, features: List[str]):
         """Concatenate Features into One User-Items Matrix
-        
+
         Parameters
         ----------
         max_users: int
@@ -58,11 +58,11 @@ class UserSimilarityMatrix:
 
     def _truncatedSVD(self, threshold: float = 0.90) -> np.ndarray:
         """Apply Truncated SVD to Explain 'n'% of total variance
-        
+
         Parameters
         ----------
         threshold: float
-            minimum variance threshold to explain 
+            minimum variance threshold to explain
         """
         n_components = 2  # minimum components to begin
         ex_var = 0
@@ -78,7 +78,7 @@ class UserSimilarityMatrix:
 
     def compute_similarity(self) -> np.ndarray:
         """Compute Pairwise Cosine Distance Matrix
-        
+
         Parameters
         ----------
         None
@@ -99,14 +99,14 @@ def compute_weighted_matrix(
     Parameters
     ----------
     users: np.ndarray
-        input user similarity matrix 
+        input user similarity matrix
     assessments: np.ndarray
-        input assessment similarity matrix 
+        input assessment similarity matrix
     course: np.ndarray
-        input course similarity matrix 
+        input course similarity matrix
     weights: List[float]
-        input list of weights associated with each matrix 
-    
+        input list of weights associated with each matrix
+
     equation: Aggregated Matrix: weight_1 + weight_2 + weight_3 = 1
     """
     return (
@@ -118,11 +118,11 @@ def compute_weighted_matrix(
 
 def rank_similar_users(X: np.ndarray, top_n: int = 5) -> pd.DataFrame:
     """Apply Custom Pandas Function to Rank Top 'n' Users
-    
+
     Parameters
     ----------
     X: np.ndarray
-        input user-user similarity matrix 
+        input user-user similarity matrix
     top_n: int (default = 5)
         Top number of most similar users to keep for final matrix
     """
