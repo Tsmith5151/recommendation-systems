@@ -9,8 +9,13 @@ logger = get_logger(__name__)
 
 
 def load_data(env: str) -> dict:
-    """Load Users and Content Data from SQLite"""
-
+    """Load Users and Content Data from SQLite
+    
+    Parameters
+    ----------
+    env: str
+        Environment for which database credentials to inherit 
+    """
     df_course = db_main.read_table(env, "select * from user_course_views")
     df_asmt = db_main.read_table(env, "select * from user_assessment_scores")
     df_interest = db_main.read_table(env, "select * from user_interests")
@@ -25,7 +30,14 @@ def load_data(env: str) -> dict:
 
 
 def data_summary(data: dict):
-    """Print Summary Metrics of Data"""
+    """Print Summary Metrics of Data
+    
+    Parameters
+    ----------
+    data: dict
+        Input dictionary containing dataframes for course,
+        assessment, interest, and tags, respectively. 
+    """
     for name, df in data.items():
         logger.info(f"\nDataframe: {name.upper()} -- Shape: {df.shape}")
         for c in df.columns:
@@ -36,7 +48,17 @@ def data_summary(data: dict):
 
 
 def preprocess(data: dict) -> dict:
-    """Preprocess input DataFrames"""
+    """Apply series of perprocessing steps such as
+    renaming columns and encoding categorical variables
+    for each dataframe. 
+
+    Parameters
+    ----------
+    data: data
+        Input dictionary containing dataframes for course,
+        assessment, interest, and tags, respectively. 
+    """
+
     prep = {}
     for name, df in data.items():
         # drop null values
@@ -85,7 +107,10 @@ def preprocess(data: dict) -> dict:
 
 
 def timer(func):
-    """Wrapper for recording execution time"""
+    """
+    Wrapper for recording execution time
+    Format = H:M:S
+    """
 
     @functools.wraps(func)
     def wrapper_time(*args, **kwargs):
