@@ -15,6 +15,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath("."))
 
+import recommender
 
 # -- Project information -----------------------------------------------------
 
@@ -32,6 +33,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinxcontrib.mermaid",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "m2r2",
