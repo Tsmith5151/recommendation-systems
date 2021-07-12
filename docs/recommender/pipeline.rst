@@ -1,5 +1,5 @@
 Pipeline 
 ********
 
-.. autoclass:: recommender.pipeline.Pipeline
+.. autoclass:: recommender.pipeline.UserSimilarityMatrix
 	:members:
