@@ -16,31 +16,37 @@ from .engine.similarity import (
 logger = get_logger(__name__)
 
 
-class Pipeline:
-    """Pipeline Class for Recommending Similar Users
+class CosineSimilarityPipeline:
+    """Collaborative Filtering Recommender Pipeline
+    Class for Recommending Similar Users using Cosine
+    Similarity Distance Metric.
 
     Parameters
     ----------
     env: str
         environment for which database credentials to inherit
     weights: List
-        List of weights for applying to similarity matrix
+        list of weights for applying to similarity matrix
+    top_n: int
+        top most similar users for ranking
     outout_table: str
-        Name of output table to write results to SQLite3 Database
+        name of output table to write results to SQLite3 Database
     """
 
     def __init__(
         self,
         env: str = None,
-        weights=List[float],
+        weights: List[float] = None,
+        top_n: int = None,
         output_table: str = None,
     ):
         self.env = env
         self.weights = weights
         self.output_table = output_table
+        self.top_n = top_n
 
     def __repr__(self):
-        return """ Pipeline for Generating User Similarities"""
+        return """ Collaborative Filtering: Cosine Similarity Pipeline"""
 
     def data_summary(self, data: dict):
         """Summary of Users/Assessments/Courses/Tags Data
@@ -73,29 +79,41 @@ class Pipeline:
         """
         logger.info("=" * 100)
         logger.info("Preprocessing Data...")
-        self.data = util.preprocess(self.data_raw)
+        data = util.preprocess(self.data_raw)
+
+        self.assessment = data["assessment"]
+        self.interest = data["interest"]
+        self.course = data["course_tags"]
+        self.max_users = data["max_users"]
 
     def apply_similarity_calculation(
-        self, name: str, features: List[str]
+        self, name: str, data: pd.DataFrame, max_users: int, features: List[str]
     ) -> np.ndarray:
         """Compute User-Items Similarity Matrix
         Steps:
-        1.) Construct User-Item Binary Vector for each input dataset
-        2.) Apply truncatedSVD to determine 'n' components to explain m% of total variance
-        3.) Compute cosine similarity
+        1.) Convert categorical columns to encodings
+        2.) Construct User-Item Binary Vector for each input dataset
+        3.) Apply truncatedSVD to determine 'n' components to explain m% of total variance
+        4.) Compute cosine similarity
 
         Parameters
         ----------
         name: str
+            name of input data source
+        data: pd.DataFrame
+            input pandas dataframe: user-items
+        max_users: str
             maximum number of users for creating user-matrix matrix dimensions
         features: List[str]
             List of features columns for creating user-items matrix
         """
+
         logger.info("=" * 100)
         logger.info(f"Computing USER-{name.upper()} Similarity Matrix...")
         logger.info(f"Input Features: {features}")
-        SM = UserSimilarityMatrix(self.data[name])
-        SM.get_user_item_matrix(self.data["max_users"], features)
+        SM = UserSimilarityMatrix(data)
+        SM.encode_categorical(features)
+        SM.get_user_item_matrix(max_users, features)
 
         logger.info(f"Applying Truncated SVD: Input Shape: {SM.matrix.shape}...")
         SM._truncatedSVD()
@@ -133,7 +151,7 @@ class Pipeline:
         """
         logger.info("=" * 100)
         logger.info("Ranking similar users...")
-        return rank_similar_users(df)
+        return rank_similar_users(df, self.top_n)
 
     def save(self, results: pd.DataFrame) -> None:
         """Write Output Data to Table in SQLite Database
@@ -158,11 +176,17 @@ class Pipeline:
         self.apply_data_loader()
         self.data_summary(self.data_raw)
         self.apply_data_prep()
-        user_interest = self.apply_similarity_calculation("interest", ["tag"])
-        user_assessment = self.apply_similarity_calculation(
-            "assessment", ["tag", "score"]
+
+        user_interest = self.apply_similarity_calculation(
+            "interest", self.interest, self.max_users, ["tag"]
         )
-        user_courses = self.apply_similarity_calculation("course_tags", ["tag", "view"])
+        user_assessment = self.apply_similarity_calculation(
+            "assessment", self.assessment, self.max_users, ["tag", "score"]
+        )
+        user_courses = self.apply_similarity_calculation(
+            "course_views", self.course, self.max_users, ["tag", "view"]
+        )
+
         weighted_matrix = self.apply_weighted_similarity(
             user_interest, user_assessment, user_courses, self.weights
         )
@@ -173,6 +197,10 @@ class Pipeline:
 
 if __name__ == "__main__":
     args = get_parser().parse_args()
-    pl = Pipeline(args.env, args.weights, args.results_table)
-    logger.info(pl)
-    pl.run()
+
+    if args.method == "cosine":
+        pl = CosineSimilarityPipeline(
+            args.env, args.weights, args.top_users, args.results_table
+        )
+        logger.info(pl)
+        pl.run()
