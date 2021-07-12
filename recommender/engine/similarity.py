@@ -137,7 +137,7 @@ def rank_similar_users(X: np.ndarray, top_n: int) -> pd.DataFrame:
     ----------
     X: np.ndarray
         input user-user similarity matrix
-    top_n: int 
+    top_n: int
         top number of most similar users to keep for final matrix
     """
 
