@@ -26,6 +26,20 @@ class UserSimilarityMatrix:
     def __repr__(self) -> str:
         return f"Dimensions of User-Items Matrix: {self.matrix.shape}"
 
+    def encode_categorical(self, cols: List[str]):
+        """Encode categorical columns
+
+        Parameters
+        ----------
+        df: pd.DataFrame
+            input pandas dataframe
+        cols: List[str]
+            list of input categorical columns to encode
+        """
+        for col in self.data.columns:
+            if col in cols:
+                self.data[col] = pd.Categorical(self.data[col]).codes
+
     def build_user_item_matrix(self, max_users: str, item: str) -> None:
         """Build User/Item Interaction Matrix
 
@@ -116,7 +130,7 @@ def compute_weighted_matrix(
     )
 
 
-def rank_similar_users(X: np.ndarray, top_n: int = 5) -> pd.DataFrame:
+def rank_similar_users(X: np.ndarray, top_n: int) -> pd.DataFrame:
     """Apply Custom Pandas Function to Rank Top 'n' Users
 
     Parameters

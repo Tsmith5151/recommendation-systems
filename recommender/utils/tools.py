@@ -84,13 +84,6 @@ def preprocess(data: dict) -> dict:
             df["view"] = pd.qcut(
                 df["view"], q=4, labels=["high", "medium", "low", "very low"]
             )
-
-        # encode categorical columns
-        cat_cols = ["tag", "score", "view", "level"]
-        for col in df.columns:
-            if col in cat_cols:
-                df[col] = pd.Categorical(df[col]).codes
-
         # save prep dataframe
         prep[name] = df
 
