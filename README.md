@@ -1,4 +1,4 @@
-# Collaborative Filtering: User Similarity Recommender  
+# User Similarity Recommender  
 ![CI/CD Workflow](https://github.com/tsmith5151/user-recommender/actions/workflows/ci.yaml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/user-recommender/badge/?version=latest)](https://user-recommender.readthedocs.io/en/latest/?badge=latest)
 ___________
