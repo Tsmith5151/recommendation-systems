@@ -13,7 +13,164 @@ from .engine.similarity import (
     rank_similar_users,
 )
 
+from .engine.factorization import RankingFactorizationRecommender, agg_similar_users_mf
+
 logger = get_logger(__name__)
+
+
+class RankingFactorizationPipeline:
+    """Collaborative Filtering Recommender Pipeline
+    Class for Recommending Similar Users using Matrix
+    Factorization.
+
+    Parameters
+    ----------
+    env: str
+        environment for which database credentials to inherit
+    top_n: int
+        top most similar users for ranking
+    outout_table: str
+        name of output table to write results to SQLite3 Database
+    """
+
+    def __init__(
+        self,
+        env: str = None,
+        top_n: int = None,
+        output_table: str = None,
+    ):
+        self.env = env
+        self.output_table = output_table
+        self.top_n = top_n
+        self.user_col = "user_handle"
+
+    def __repr__(self):
+        return """ Collaborative Filtering: Cosine Similarity Pipeline"""
+
+    def data_summary(self, data: dict):
+        """Summary of Users/Assessments/Courses/Tags Data
+
+        Parameters
+        ----------
+        data: dict
+            Input dictionary containing dataframes for course,
+            assessment, interest, and tags, respectively.
+        """
+        util.data_summary(data)
+
+    def apply_data_loader(self) -> None:
+        """Load Users/Assessments/Course/Tags Data
+
+        Parameters
+        ----------
+        None
+        """
+        logger.info("=" * 100)
+        logger.info("Loading Data...")
+        self.data_raw = util.load_data(self.env)
+
+    def apply_data_prep(self):
+        """Preprocess Raw Data
+
+        Parameters
+        ----------
+        None
+        """
+        logger.info("=" * 100)
+        logger.info("Preprocessing Data...")
+        data = util.preprocess(self.data_raw)
+
+        self.assessment = data["assessment"]
+        self.interest = data["interest"]
+        self.course = data["course_tags"]
+
+    def apply_matrix_factorization(
+        self,
+        df: pd.DataFrame,
+        name: str,
+        users_col: str,
+        items_col: str,
+        extra_cols: List[str],
+        top_n: int,
+    ) -> pd.DataFrame:
+        """Rank Users based on Matrix Factorization
+
+        Parameters
+        ----------
+        df: np.ndarray
+            input dataframe
+        name: str
+            name of input data source
+        users: str
+            name of the column in `observation_data` that corresponds to the user id.
+        items_col: str
+            name of the column in `observation_data` that corresponds to
+            the item id.
+        extras_col: Optional[str]
+            side information for the items.  This SFrame must have a column with
+            the same name as what is specified by the `item_id` input parameter.
+            `item_data` can provide any amount of additional item-specific
+            information.
+        """
+        logger.info("=" * 100)
+        logger.info("Ranking similar users...")
+        MF = RankingFactorizationRecommender(name, users_col, items_col, extra_cols)
+        MF.fit(df)
+        return MF.rank_users(self.top_n)
+
+    def apply_user_aggregate_ranking(self, *args) -> pd.DataFrame:
+        """Aggregate recommended similar users for each unique user id
+
+        Parameters
+        ----------
+        args: pd.DataFrame
+            input dataframe containing similar user recommendations with scores
+        """
+        logger.info("=" * 100)
+        logger.info("Aggregating recommended users dataframe...")
+        return agg_similar_users_mf(self.user_col, *args)
+
+    def save(self, results: pd.DataFrame) -> None:
+        """Write Output Data to Table in SQLite Database
+
+        Parameters
+        ----------
+        df: np.ndarray
+            input dataframe
+        """
+        logger.info("=" * 100)
+        logger.info("Updating user rankings in SQLite Database...")
+        db_main.write_table(self.env, self.output_table + "_mf", results)
+
+    @timer
+    def run(self) -> None:
+        """Main method for generating user x content matrix
+
+        Parameters
+        ----------
+        None
+        """
+        self.apply_data_loader()
+        self.data_summary(self.data_raw)
+        self.apply_data_prep()
+
+        user_interest = self.apply_matrix_factorization(
+            self.interest, "interest", self.user_col, "tag", None, self.top_n
+        )
+
+        user_assessment = self.apply_matrix_factorization(
+            self.assessment, "assessment", self.user_col, "tag", ["score"], self.top_n
+        )
+
+        user_courses = self.apply_matrix_factorization(
+            self.course, "course_tags", self.user_col, "tag", ["view"], self.top_n
+        )
+
+        ranking = self.apply_user_aggregate_ranking(
+            user_interest, user_assessment, user_courses
+        )
+        self.save(ranking)
+        logger.info("Done!")
 
 
 class CosineSimilarityPipeline:
@@ -162,7 +319,7 @@ class CosineSimilarityPipeline:
             input dataframe
         """
         logger.info("=" * 100)
-        logger.info("Updating similarity matrix in SQLite Database...")
+        logger.info("Updating user rankings in SQLite Database...")
         db_main.write_table(self.env, self.output_table, results)
 
     @timer
@@ -198,9 +355,14 @@ class CosineSimilarityPipeline:
 if __name__ == "__main__":
     args = get_parser().parse_args()
 
-    if args.method == "cosine":
+    if args.method == "cosine-distance":
         pl = CosineSimilarityPipeline(
             args.env, args.weights, args.top_users, args.results_table
         )
+        logger.info(pl)
+        pl.run()
+
+    if args.method == "matrix-factorization":
+        pl = RankingFactorizationPipeline(args.env, args.top_users, args.results_table)
         logger.info(pl)
         pl.run()

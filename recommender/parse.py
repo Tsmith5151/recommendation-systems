@@ -19,8 +19,8 @@ def get_parser():
     )
     parser.add_argument(
         "--method",
-        default="cosine",
-        choices=["cosine", "matrix-factorization"],
+        default="cosine-distance",
+        choices=["cosine-distance", "matrix-factorization"],
         type=str,
         help="Collaborative filtering method",
     )

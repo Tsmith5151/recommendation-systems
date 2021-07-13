@@ -1,11 +1,15 @@
 import pandas as pd
-from typing import List
+from typing import Optional
 import turicreate as tc
 
 
 class RankingFactorizationRecommender:
     def __init__(
-        self, name: str, users_col: str, items_col: str, extras_col: List[str] = None
+        self,
+        name: str,
+        users_col: str,
+        items_col: str,
+        extra_cols: Optional[str] = None,
     ):
         """
         Ranking Factorization Recommender Class
@@ -21,7 +25,7 @@ class RankingFactorizationRecommender:
         items_col: str
             name of the column in `observation_data` that corresponds to
             the item id.
-        extras_col: List[str]
+        extras_col: Optional[str]
             side information for the items.  This SFrame must have a column with
             the same name as what is specified by the `item_id` input parameter.
             `item_data` can provide any amount of additional item-specific
@@ -30,9 +34,9 @@ class RankingFactorizationRecommender:
         self.name = name
         self.users_col = users_col
         self.items_col = items_col
-        self.extra_col = extras_col
+        self.extra_cols = extra_cols
 
-    def get_dataframe(self):
+    def convert_dataframe(self, df: pd.DataFrame) -> tc.SFrame:
         """Convert pandas DataFrame to "scalable, tabular, column-mutable
         dataframe object that can scale to big data.
 
@@ -40,7 +44,7 @@ class RankingFactorizationRecommender:
         ----------
         None
         """
-        return tc.SFrame(tc.SFrame(self.df.astype(str)))
+        return tc.SFrame(tc.SFrame(df.astype(str)))
 
     def fit(self, data: pd.DataFrame):
         """Fit ranking factorization recommender to learn a set of latent
@@ -52,8 +56,11 @@ class RankingFactorizationRecommender:
         data - pd.DataFrame
             input pandas dataframe
         """
-        self.sdf = self.get_dataframe(data)
-        self.extra_cols = self.sdf[self.extra_cols] if not self.extra_cols else None
+        self.sdf = self.convert_dataframe(data)
+
+        if self.extra_cols:
+            self.extra_cols = self.sdf[self.extra_cols]
+
         self.matrix = tc.ranking_factorization_recommender.create(
             self.sdf,
             user_id=self.users_col,
@@ -62,20 +69,51 @@ class RankingFactorizationRecommender:
             solver="ials",
         )
 
-    def rank_users(self, n_top: int):
+    def rank_users(self, n_top: int) -> pd.DataFrame:
         """Factorization_recommender will return the nearest users based on
         the cosine similarity between latent user factors
-
-        Parameters
-        ----------
-        top_n: int (default = 5)
-            top number of most similar users to keep for final matrix
         """
         rank = (
             self.matrix.get_similar_users(self.sdf[self.users_col], n_top)
-            .drop_duplicates(subset=self.sf.column_names())
-            .sort(self.user_col)
             .to_dataframe()
+            .drop_duplicates()
         )
+
+        # groupby and sort scores
         rank["table"] = self.name
+
+        # format score
+        rank['score'] = rank['score'].round(5)
         return rank
+
+
+def agg_similar_users_mf(users_col: str, *args: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate duplicated recommended similar users for a given input user.
+    The current implementation takes is simplistic and takes the mean score;
+    future work could be to perform a weighted aggregation on the various
+    content tables.
+
+    Parameters
+    ----------
+    users_col: str
+        name of the column in `observation_data` that corresponds to the user id.
+    args: pd.DataFrame
+        input dataframe containing similar user recommendations with scores
+    """
+
+    # concat multiple user dataframes
+    rank = pd.concat([*args], axis=0)
+
+    # aggregate multiple similar users per unique user
+    rank_agg = (
+        rank.groupby([users_col, "similar"])["score"].mean().reset_index(drop=False)
+    )
+
+    # groupby and sort users
+    output = (
+        rank_agg.groupby(["user_handle"])
+        .apply(lambda x: x.sort_values(["score"], ascending=False))
+        .reset_index(drop=True)
+    )
+
+    return output
