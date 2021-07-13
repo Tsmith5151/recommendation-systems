@@ -6,3 +6,6 @@ sphinxcontrib-mermaid
 pandas
 numpy
 flask
+PyYAML
+scikit-learn
+turicreate
