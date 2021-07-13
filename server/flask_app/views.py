@@ -36,7 +36,9 @@ class SimilarUsers:
         if data.shape[0] == 0:
             return json.dumps({self.user_id: "No records found!"})
         else:
-            return json.dumps({str(self.user): data[['similar','score']].to_dict(orient='records')})
+            return json.dumps(
+                {str(self.user): data[["similar", "score"]].to_dict(orient="records")}
+            )
 
 
 @app.route("/api/similarity/", methods=["POST", "GET"])
