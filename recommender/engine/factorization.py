@@ -83,7 +83,7 @@ class RankingFactorizationRecommender:
         rank["table"] = self.name
 
         # format score
-        rank['score'] = rank['score'].round(5)
+        rank["score"] = rank["score"].round(5)
         return rank
 
 
