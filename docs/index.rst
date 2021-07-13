@@ -10,6 +10,6 @@ Overview
 Source Code 
 ~~~~~~~~~~~
 
-.. toctree:: 
+.. toctree::
    recommender/index.rst
    server/index.rst

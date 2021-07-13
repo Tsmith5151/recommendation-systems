@@ -2,17 +2,17 @@
 Similarity Metrics
 ******************
 
-CF: Matrix Factorization
-~~~~~~~~~~~~~~~~~~~~~~~~
+Matrix Factorization
+~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: recommender.engine.similarity.RankingFactorizationRecommender
+.. autoclass:: recommender.engine.factorization.RankingFactorizationRecommender
 	:members:
 
-.. autofunction:: recommender.engine.similarity.agg_similar_users_mf	
+.. autofunction:: recommender.engine.factorization.agg_similar_users_mf	
 
 
-CF: Cosine Distance
-~~~~~~~~~~~~~~~~~~~
+Cosine Distance
+~~~~~~~~~~~~~~~
 
 .. autoclass:: recommender.engine.similarity.UserSimilarityMatrix
 	:members:

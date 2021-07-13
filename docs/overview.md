@@ -6,12 +6,23 @@ a given user of interest. The dataset consists of anonymized user data captured
 from an online platform that includes features such as user interests,
 assessment scores, course viewing details, and tagged categories. 
 
-For this project, we will build a recommender system to first generate a
-user-item matrix to compute a pairwise similarity metric across all users and
-in return is utilized to rank the top users that are most similar to a given
-user. The result from the recommender application can be accessible via a RESTful
-API that is hosted locally (for now). The endpoint will take a given user's
-unique ID and then return the top '5' most similar users. For this project we
+For this project, there were two methods explored for recommending users whom
+share similar patterns. The first approach is a simplified version of
+collaborative filtering where we generate an interaction matrix for all users
+and the items they've interacted with (e.g. tags, view times, assessment
+scores). We then build a user-item matrix and to compute a pairwise cosine
+distance across all users and in return is utilized to rank the top users that
+are most similar to a given user. The second approach consists of Factorization
+Machines - which is basically a generalization of Matrix Factorization. This
+approach learns a set of latent factors for each user and item and then uses
+them to rank recommended users according to the likelihood of observing those
+(user, item) pairs. This method produces the nearest users based on the cosine 
+similarity between latent user factors.
+
+The result from the recommender application can be accessible via a RESTful
+API that is hosted locally (for now). The endpoint is based on the `Matrix
+Factorization` method implemented and will take a given user's unique ID as the
+input and return the top 'n' most similar users. For this project we
 will be using Flask-RESTful, which is just an extension for Flask that adds
 support for quickly building REST APIs in Python.
 
@@ -219,7 +230,7 @@ id. The following command can be executed to return the same JSON object:
 python -m server.api --user_id 110
 ```
 
-**Output JSON**
+**Output JSON for Matrix Factorization Approach**
 
 ```json
 [
@@ -295,15 +306,20 @@ sparse matrix directly. Secondly, collaborative filtering methods also do not
 work well when a new user is added and has minimal information (e.g. cold-start
 problem).
 
-One approach to help with scaling is applying matrix factorization (MF). This
+One approach to help with scaling is implementing matrix factorization (MF). This
 method helps decompose a high dimensional feature space into a set of latent
 features. One common MF method is Singular value decomposition (SVD). In our
 case, truncatedSVD was applied and a minimum variance explained threshold
 parameter was set to return a series of latent features with lower dimensions.
 One observation to note at this stage is SVD can be very slow and expensive to
-compute. It would be recommended to explore other options such applying
-Alternating Least Square (ALS), in which the matrix factorization can computed
-in parallel. 
+compute. 
+
+As mentioned in the previous sections, for this project we will be
+utilizing the `turicreate` library and leveraging the `turicreate.SFrame` data 
+structure (e.g. scalable dataframe), which data is stored column-wise, and is 
+stored on persistent storage to help avoid being constrained by memory size.
+For more details on `SFrame`, check out the docs [here](https://apple.github.io/turicreate/docs/api/generated/turicreate.SFrame.html).
+
 
 **2.) Scalability**
 
