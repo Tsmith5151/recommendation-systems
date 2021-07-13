@@ -100,8 +100,16 @@ ______
 To run the `User-Similarity Pipeline`, the following command can be
 executed from a command line within the project root dir:
 
+
+** Method 1: Ranking Users based on SVD + Cosine Distance **
 ```
-python -m recommender.pipeline --env dev --results_table user_ranking
+python -m recommender.pipeline --env dev --method cosine-distance --results_table user_ranking 
+```
+
+** Method 2: Ranking Users based on Matrix Factorization **
+
+```
+python -m recommender.pipeline --env dev --method matrix-factorization --results_table user_ranking 
 ```
 
 The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
@@ -115,7 +123,7 @@ the development environment. For production purposes, the `prod` flag can be
 passed, however further configuration and database security features would need
 to be incorporated. 
 
-### Pipeline Stages
+### Pipeline Stages (Method 1)
 
 The user recommender pipeline executes the following steps:
 
@@ -214,15 +222,48 @@ python -m server.api --user_id 110
 **Output JSON**
 
 ```json
-{
-  "110": [
-    "{'user': 5182, 'score': 0.4331}", 
-    "{'user': 5029, 'score': 0.4159}", 
-    "{'user': 1133, 'score': 0.4083}", 
-    "{'user': 7477, 'score': 0.4043}", 
-    "{'user': 2867, 'score': 0.3992}"
-  ]
-}
+[
+   {
+      "similar":"5537",
+      "score":0.8957
+   },
+   {
+      "similar":"7771",
+      "score":0.8567
+   },
+   {
+      "similar":"5843",
+      "score":0.8519
+   },
+   {
+      "similar":"239",
+      "score":0.8512
+   },
+   {
+      "similar":"9530",
+      "score":0.8363
+   },
+   {
+      "similar":"687",
+      "score":0.7750
+   },
+   {
+      "similar":"854",
+      "score":0.7691
+   },
+   {
+      "similar":"1199",
+      "score":0.7563
+   },
+   {
+      "similar":"9046",
+      "score":0.7409
+   },
+   {
+      "similar":"7341",
+      "score":0.7401
+   }
+]
 ```
 ______
 ## Future Work

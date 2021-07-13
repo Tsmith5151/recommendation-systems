@@ -6,6 +6,8 @@ Database
 
 .. autofunction:: recommender.database.utils.drop_table
 
+.. autofunction:: recommender.database.utils.create_ranking_table_mf
+
 .. autofunction:: recommender.database.utils.create_ranking_table
 
 .. autofunction:: recommender.database.utils.create_ranking_table_index
