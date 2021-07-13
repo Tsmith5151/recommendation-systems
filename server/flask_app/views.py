@@ -7,7 +7,7 @@ from recommender.database import utils as db_main
 # Environment Variable
 # import os
 DATABASE_ENV = "dev"  # os.environ["DATABASE_ENV"]
-TABLE = "user_ranking"  # os.environ["RESULTS_TABLE"]
+TABLE = "user_ranking_mf"  # os.environ["RESULTS_TABLE"]
 
 
 class SimilarUsers:
@@ -36,7 +36,7 @@ class SimilarUsers:
         if data.shape[0] == 0:
             return json.dumps({self.user_id: "No records found!"})
         else:
-            return json.dumps({str(self.user): list(data.loc[0].values.flatten()[:-1])})
+            return json.dumps({str(self.user): data[['similar','score']].to_dict(orient='records')})
 
 
 @app.route("/api/similarity/", methods=["POST", "GET"])
