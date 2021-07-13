@@ -19,6 +19,28 @@ def drop_table(env: str, table: str) -> None:
         cur.execute(sql_table)
 
 
+def create_ranking_table_mf(env: str, table: str, top_n: int) -> None:
+    """Query User Similarity Table (Matrix Factorization) for SQLite Database
+
+    Parameters
+    ----------
+    env: str
+        environment for which database credentials to inherit
+    table: str
+        name of sql table create
+    top_n: int
+        number of top most similar users to create columns for
+    """
+    with DatabaseManager(env) as conn:
+        sql_table = f"""CREATE TABLE IF NOT EXISTS {table}\
+            (user_handle TEXT NOT NULL PRIMARY KEY,\
+            similar TEXT NOT NULL,\
+            score REAL)
+            """
+        cur = conn.cursor()
+        cur.execute(sql_table)
+
+
 def create_ranking_table(env: str, table: str, top_n: int) -> None:
     """Query User Similarity Table for SQLite Database
 
