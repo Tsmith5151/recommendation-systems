@@ -16,8 +16,6 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath('..'))
 
-import recommender
-
 # -- Project information -----------------------------------------------------
 
 project = "user-recommender-system"
@@ -32,10 +30,8 @@ author = "Trace Smith"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinxcontrib.mermaid",
-    "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "m2r2",
 ]
