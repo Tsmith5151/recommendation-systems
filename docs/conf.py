@@ -32,6 +32,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinxcontrib.mermaid",
+    "sphinx_autodoc_typehints",
     "sphinx.ext.napoleon",
     "m2r2",
 ]
