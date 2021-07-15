@@ -7,4 +7,6 @@ Utility Functions
 
 .. autofunction:: recommender.utils.tools.preprocess
 
+.. autofunction:: recommender.utils.tools.agg_similar_users_mf	
+
 .. autofunction:: recommender.utils.tools.timer
