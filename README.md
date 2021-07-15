@@ -1,4 +1,4 @@
-# CF: User-User Similarity Recommender  
+# User-User Similarity Recommender with Implicit Data 
 ![CI/CD Workflow](https://github.com/tsmith5151/user-recommender/actions/workflows/ci.yaml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/user-recommender/badge/?version=latest)](https://user-recommender.readthedocs.io/en/latest/?badge=latest)
 ___________
