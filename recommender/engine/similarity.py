@@ -3,6 +3,7 @@ import turicreate as tc
 
 
 from recommender.logger import get_logger
+
 logger = get_logger(__name__)
 
 
@@ -16,10 +17,10 @@ class UserSimilarityRecommender:
     ):
         """
         User Similarity Recommender Recommender Class
-        
+
         Source:
         https://apple.github.io/turicreate/docs/api/generated/turicreate
-        
+
         Note: get_similar_users currently not supported for item similarity
         models. As a workaround, to get the neighborhood of users, train a
         model with the items and users reversed, then call get_similar_items.
