@@ -85,35 +85,3 @@ class RankingFactorizationRecommender:
         # format score
         rank["score"] = rank["score"].round(5)
         return rank
-
-
-def agg_similar_users_mf(users_col: str, *args: pd.DataFrame) -> pd.DataFrame:
-    """Aggregate duplicated recommended similar users for a given input user.
-    The current implementation takes is simplistic and takes the mean score;
-    future work could be to perform a weighted aggregation on the various
-    content tables.
-
-    Parameters
-    ----------
-    users_col: str
-        name of the column in `observation_data` that corresponds to the user id.
-    args: pd.DataFrame
-        input dataframe containing similar user recommendations with scores
-    """
-
-    # concat multiple user dataframes
-    rank = pd.concat([*args], axis=0)
-
-    # aggregate multiple similar users per unique user
-    rank_agg = (
-        rank.groupby([users_col, "similar"])["score"].mean().reset_index(drop=False)
-    )
-
-    # groupby and sort users
-    output = (
-        rank_agg.groupby(["user_handle"])
-        .apply(lambda x: x.sort_values(["score"], ascending=False))
-        .reset_index(drop=True)
-    )
-
-    return output

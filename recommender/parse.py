@@ -19,10 +19,17 @@ def get_parser():
     )
     parser.add_argument(
         "--method",
-        default="cosine-distance",
-        choices=["cosine-distance", "matrix-factorization"],
+        default="similarity",
+        choices=["similarity", "factorization"],
         type=str,
         help="Collaborative filtering method",
+    )
+    parser.add_argument(
+        "--similarity_metric",
+        default="cosine",
+        choices=["jaccard", "cosine", "pearson"],
+        type=str,
+        help="Metric to measure the similarity between two users",
     )
     parser.add_argument(
         "--weights",

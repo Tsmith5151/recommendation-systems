@@ -1,161 +1,87 @@
-import numpy as np
 import pandas as pd
-from typing import List
-from sklearn.decomposition import TruncatedSVD
-from sklearn.metrics.pairwise import pairwise_distances
+import turicreate as tc
+
 
 from recommender.logger import get_logger
-
 logger = get_logger(__name__)
 
 
-class UserSimilarityMatrix:
-    """Class for building and computing similar users"""
-
-    def __init__(self, data: pd.DataFrame):
+class UserSimilarityRecommender:
+    def __init__(
+        self,
+        name: str,
+        users_col: str,
+        items_col: str,
+        similarity_metric: str = None,
+    ):
         """
-        Generate user-user similarity metrics
+        User Similarity Recommender Recommender Class
+        Source:
+        https://apple.github.io/turicreate/docs/api/generated/turicreate.recommender.item_similarity_recommender.ItemSimilarityRecommender.html?highlight=itemsimilarityrecommender
+
+        Note: get_similar_users currently not supported for item similarity
+        models. As a workaround, to get the neighborhood of users, train a
+        model with the items and users reversed, then call get_similar_items.
 
         Parameters
         ----------
-        data: pd.DataFrame
-            input datataframe
+        name: str
+            name of input data source
+        users_col: str
+            name of the column in `observation_data` that corresponds to the user id.
+        items_col: str
+            name of the column in `observation_data` that corresponds to
+            the item id.
+        similarity_metric: str
+            metric to measure the similarity between users
         """
-        self.data = data
+        self.name = name
+        self.users_col = users_col
+        self.items_col = items_col
+        self.similarity_metric = similarity_metric
 
-    def __repr__(self) -> str:
-        return f"Dimensions of User-Items Matrix: {self.matrix.shape}"
-
-    def encode_categorical(self, cols: List[str]):
-        """Encode categorical columns
-
-        Parameters
-        ----------
-        df: pd.DataFrame
-            input pandas dataframe
-        cols: List[str]
-            list of input categorical columns to encode
-        """
-        for col in self.data.columns:
-            if col in cols:
-                self.data[col] = pd.Categorical(self.data[col]).codes
-
-    def build_user_item_matrix(self, max_users: str, item: str) -> None:
-        """Build User/Item Interaction Matrix
-
-        Parameters
-        ----------
-        max_users: int
-            maximum number of users for creating user-matrix matrix dimensions
-        features: str
-            input feature column for creating user-items matrix
-        """
-        matrix = np.zeros(shape=(max_users, max(self.data[item])))
-        for _, row in self.data.iterrows():
-            matrix[row["user_handle"] - 1, row[item] - 1] = 1
-        return matrix
-
-    def get_user_item_matrix(self, max_users: int, features: List[str]):
-        """Concatenate Features into One User-Items Matrix
-
-        Parameters
-        ----------
-        max_users: int
-            maximum number of users for creating user-matrix matrix dimensions
-        features: List[str]
-            list of features columns for creating user-items matrix
-        """
-        results = []
-        for item in features:
-            results.append(self.build_user_item_matrix(max_users, item))
-        self.matrix = np.hstack(results)
-
-    def _truncatedSVD(self, threshold: float = 0.90) -> np.ndarray:
-        """Apply Truncated SVD to Explain 'n'% of total variance
-
-        Parameters
-        ----------
-        threshold: float
-            minimum variance threshold to explain
-        """
-        n_components = 2  # minimum components to begin
-        ex_var = 0
-        while ex_var < threshold:
-            pc = TruncatedSVD(n_components=n_components)
-            pc.fit_transform(self.matrix)
-            ex_var = np.sum(pc.explained_variance_ratio_)
-            n_components += 1
-        logger.info(
-            f"Total components {pc.n_components} with {ex_var:0.2f} variance explained"
-        )
-        self.matrix = pc.transform(self.matrix)
-
-    def compute_similarity(self) -> np.ndarray:
-        """Compute Pairwise Cosine Distance Matrix
+    def convert_dataframe(self, df: pd.DataFrame) -> tc.SFrame:
+        """Convert pandas DataFrame to "scalable, tabular, column-mutable
+        dataframe object that can scale to big data.
 
         Parameters
         ----------
         None
         """
-        return 1 - pairwise_distances(self.matrix, metric="cosine")
+        return tc.SFrame(tc.SFrame(df.astype(str)))
 
+    def fit(self, data: pd.DataFrame):
+        """Model calculates similarity between users using the observations of
+        tags/items interacted between users. The model scores an user 'j' for
+        item 'k' using a weighted average of the items previous observations.
+        By default, cosine will be used to measure the similarity between two users.
 
-def compute_weighted_matrix(
-    users: np.ndarray,
-    assessments: np.ndarray,
-    course: np.ndarray,
-    weights: List[float],
-) -> np.ndarray:
-    """
-    Generate weighted user-user matrices for each table:
-    Interest/Assessment/Course Views
-
-    Parameters
-    ----------
-    users: np.ndarray
-        input user similarity matrix
-    assessments: np.ndarray
-        input assessment similarity matrix
-    course: np.ndarray
-        input course similarity matrix
-    weights: List[float]
-        input list of weights associated with each matrix
-
-    equation: Aggregated Matrix: weight_1 + weight_2 + weight_3 = 1
-    """
-    return (
-        (users * float(weights[0]))
-        + (assessments * float(weights[1]))
-        + (course * float(weights[2]))
-    )
-
-
-def rank_similar_users(X: np.ndarray, top_n: int) -> pd.DataFrame:
-    """Apply Custom Pandas Function to Rank Top 'n' Users
-
-    Parameters
-    ----------
-    X: np.ndarray
-        input user-user similarity matrix
-    top_n: int
-        top number of most similar users to keep for final matrix
-    """
-
-    def custom_udf(X):
+        Parameters
+        ----------
+        data - pd.DataFrame
+            input pandas dataframe
         """
-        Custom Pandas function for using index/score to
-        generate output results dataframe.
-        """
-        idx = np.argsort(X.values, axis=0)[::-1][1 : top_n + 1]
-        return [
-            str({"user": i, "score": X.astype(float).round(4).values[i]}) for i in idx
-        ]
+        self.sdf = self.convert_dataframe(data)
+        self.matrix = tc.recommender.item_similarity_recommender.create(
+            self.sdf,
+            user_id=self.items_col,
+            item_id=self.users_col,
+            similarity_type=self.similarity_metric,
+        )
 
-    # dimensions: users x top_n
-    if isinstance(X, np.ndarray):
-        X = pd.DataFrame(X)
-    ranking = X.apply(custom_udf).T
-    ranking.columns = [f"{i+1}" for i in ranking.columns]
-    ranking["user_handle"] = ranking.index
-    logger.info(f"User Ranking Dataframe Shape: {ranking.shape}")
-    return ranking
+    def rank_users(self, n_top: int) -> pd.DataFrame:
+        """
+        Obtain the most similar items for each item in items.
+        """
+        rank = (
+            self.matrix.get_similar_items(self.sdf[self.users_col], n_top)
+            .to_dataframe()
+            .drop_duplicates()
+        )
+
+        # groupby and sort scores
+        rank["table"] = self.name
+
+        # format score
+        rank["score"] = rank["score"].round(5)
+        return rank
