@@ -1,4 +1,5 @@
 import os
+import tempfile
 import numpy as np
 import tensorflow as tf
 from typing import Dict, Text
@@ -14,7 +15,7 @@ logger = get_logger(__name__)
 class QueryModel(tf.keras.Model):
     def __init__(self, query: tf.Tensor, unique_user_id: int, embedding_dim=32):
         """
-        Build embedding layer for create a vocabulary that maps a raw
+        Query Tower: Build embedding layer for create a vocabulary that maps a raw
         feature value to an integer to lookup corresponding embeddings in the
         embedding tables. Preprocessing layer is applied to capture user
         viewing time. This framework can be expanded to include other similar
@@ -67,7 +68,7 @@ class CandidateModel(tf.keras.Model):
         max_tokens: int = 1_000,
     ):
         """
-        Build embedding layer for create a vocabulary that maps a raw
+        Candidate Tower: Build embedding layer for create a vocabulary that maps a raw
         feature value to an integer to lookup corresponding embeddings in the
         embedding tables. Preprocessing layer is applied to capture the fact
         that courses with very similar titles are likely to belong to the same
@@ -127,8 +128,7 @@ class RetrievalModel(tfrs.models.Model):
     def __init__(self, query, candidate, unique_user_ids, unique_title_ids):
 
         """
-        Class to build a two-tower retrieval model, that retrievesO(thousands)
-        candidates from a corpus of O(millions) candidates.
+        Class to build a two-tower retrieval model
 
         Parameters
         ----------
@@ -169,7 +169,49 @@ class RetrievalModel(tfrs.models.Model):
         return self.task(query_embeddings, positive_candidate_embeddings)
 
 
-def train_test_split(data: tf.Tensor, train_ratio: int) -> tf.Tensor:
+def retrieve_topk_candidates(
+    candidate: tf.Tensor,
+    model: tf.keras.Sequential,
+    batch_size: int,
+    k: int,
+) -> None:
+    """
+    Generate top 'k' recommendations by passing through the query tower and find
+    its representation from the learned embedding vector. An affinity score
+    between the query and all the candidates is calculated and sorted with
+    the k-nearest candidates to the query. The approach implemented is a
+    brute-force method, but it's recommended to implement Approximate
+    Nearest Neighbor (ANN), which is significantly faster.
+
+    Parameters
+    ----------
+    candidate: tf.Tensor
+        input candidate dataset
+    model: tf.keras.Sequential
+        trained retrieval model
+    batch_size:int
+        number of samples per batch of computation.
+    k: int
+        number of items to retrieve for recommending to users
+    """
+    brute_force = tfrs.layers.factorized_top_k.BruteForce(
+        model.query_model.layers[0].layers[0], k=k
+    )
+    brute_force.index(
+        candidate.batch(batch_size).map(model.candidate_model.layers[0].layers[0]),
+        candidate,
+    )
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        retrieval_model_path = os.path.join(tmp_dir, "retrieval_model")
+
+    brute_force(tf.constant([''])) #build layer
+    brute_force.save(
+        retrieval_model_path,
+        options=tf.saved_model.SaveOptions(namespace_whitelist=["BruteForce"]),
+    )
+
+
+def train_test_split(data: tf.Tensor, train_ratio: int, batch_size: int) -> tf.Tensor:
     """
     Function to split data into train/test. Note: in an practice we would
     most likely be done by time: the data up to time  would be used to
@@ -189,20 +231,26 @@ def train_test_split(data: tf.Tensor, train_ratio: int) -> tf.Tensor:
 
     train = shuffled.take(train_split_size)
     test = shuffled.skip(train_split_size)
-    return train, test
+    logger.info(f"Train Size: {train.__len__()} -- Test Size: {test.__len__()}")
+
+    cached_train = train.shuffle(1_000).batch(batch_size)
+    cached_test = test.batch(batch_size).cache()
+    return cached_train, cached_test
 
 
-def train(
+def retrieval_main(
     query: tf.Tensor,
     candidate: tf.Tensor,
     epochs: int = None,
     learning_rate: int = 0.10,
     batch_size: int = 5_000,
-    split_ratio=0.80,
+    split_ratio: float = 0.80,
+    top_k: int = 10,
 ):
     """
-    Function to generate user/content vocabulary; split train/test dataset a
-    and train/evaluate two-tower retrieval model.
+    Retrieval Model: Helper function to generate user/content vocabulary;
+    split train/test dataset, train/evaluate two-tower retrieval model,
+    and finally generate topk recommended items for an input query.
 
     Parameters
     ----------
@@ -219,6 +267,8 @@ def train(
         number of samples per batch of computation.
     train_ratio: int
         percentage to split train/test
+    top_k: int
+        number of items to retrieve for recommending to users
     """
 
     # maps each raw values to unique integer
@@ -226,17 +276,16 @@ def train(
         np.concatenate(list(query.batch(batch_size).map(lambda x: x["user_id"])))
     )
     unique_title_ids = np.unique(np.concatenate(list(candidate.batch(batch_size))))
-    logger.info(f"Unique Users: {len(unique_user_ids)}")
-    logger.info(f"Unique Titles: {len(unique_title_ids)}")
+    logger.info(
+        f"Unique Users: {len(unique_user_ids)} -- Unique Titles: {len(unique_title_ids)}"
+    )
 
-    # split train/test
-    train, test = train_test_split(query, train_ratio=split_ratio)
-    logger.info(f"Train Size: {train.__len__()} -- Test Size: {test.__len__()}")
+    # split train/test and cache
+    cached_train, cached_test = train_test_split(
+        query, train_ratio=split_ratio, batch_size=batch_size
+    )
 
-    # cache input data
-    cached_train = train.shuffle(1_000).batch(batch_size)
-    cached_test = test.batch(batch_size).cache()
-
+    # Build Retrieval Model
     model = RetrievalModel(query, candidate, unique_user_ids, unique_title_ids)
     model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=learning_rate))
 
@@ -260,43 +309,12 @@ def train(
     logger.info("Evaluating Retrieval Model...")
     model.evaluate(cached_test, return_dict=True)
 
-    logger.info("Save Model...")
-    for name in ["QueryModel", "CandidateModel", "RetrievalModel"]:
-        model_path = os.path.join("models", name)
-        os.makedirs(model_path, exist_ok=True)
-        if name == "QueryModel":
-            model[1].query_model.layers[0].layers[0].save(model_path, overwrite=True)
-        if name == "CandidateModel":
-            model[1].candidate_model.layers[0].layers[0].save(
-                model_path, overwrite=True
-            )
-
-    return history, model
-
-
-def brute_force_recommendation(
-    candidate: tf.Tensor,
-    query_model: tf.keras.Sequential,
-    candidate_model: tf.keras.Sequential,
-    batch_size: int,
-    k: int = 10,
-):
-    """
-    Create a model that takes in raw query features and recommend top 10 items
-
-    Parameters
-    ----------
-    candidate: tf.Tensor
-        input candidate dataset
-    query: tf.Tensor
-        tensor of query representations.
-    candidate: tf.Tensor
-        tensor of candidate representations.
-    batch_size:int
-        number of samples per batch of computation.
-    k: int
-        number of items to retrieve from the query layer
-    """
-    brute_force = tfrs.layers.factorized_top_k.BruteForce(query_model, k=k)
-    brute_force.index(candidate.batch(batch_size).map(candidate_model), candidate)
-    return brute_force
+    logger.info("Generate Top-K Recommendations for Users...")
+    return model
+    retrieve_topk_candidates(
+        candidate,
+        model,
+        batch_size=batch_size,
+        k=top_k,
+    )
+    return model,history
