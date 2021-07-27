@@ -204,7 +204,7 @@ def retrieve_topk_candidates(
     with tempfile.TemporaryDirectory() as tmp_dir:
         retrieval_model_path = os.path.join(tmp_dir, "retrieval_model")
 
-    brute_force(tf.constant([''])) #build layer
+    brute_force(tf.constant([""]))  # build layer
     brute_force.save(
         retrieval_model_path,
         options=tf.saved_model.SaveOptions(namespace_whitelist=["BruteForce"]),
@@ -317,4 +317,4 @@ def retrieval_main(
         batch_size=batch_size,
         k=top_k,
     )
-    return model,history
+    return model, history
