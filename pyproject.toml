@@ -13,6 +13,7 @@ scikit-learn = "0.24.2"
 tensorflow = "^2.5.0"
 tensorflow-recommenders = "^0.5.2"
 colorama = "^0.4.4"
+coremltools = "^4.1"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "3.0.16"
