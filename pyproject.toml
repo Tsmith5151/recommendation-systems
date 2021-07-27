@@ -14,6 +14,7 @@ tensorflow = "^2.5.0"
 tensorflow-recommenders = "^0.5.2"
 colorama = "^0.4.4"
 coremltools = "^4.1"
+matplotlib = "^3.4.2"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "3.0.16"
@@ -22,6 +23,7 @@ ipython = "7.25.0"
 flake8 = "3.9.2"
 black = "21.6b0"
 pytest = "^6.2.4"
+matplotlib = "^3.4.2"
 
 
 [tool.black]
