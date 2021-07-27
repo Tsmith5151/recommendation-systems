@@ -13,8 +13,9 @@ class RankingFactorizationRecommender:
     ):
         """
         Ranking Factorization Recommender Class
+
         Source:
-        https://apple.github.io/turicreate/docs/api/generated/turicreate.recommender.ranking_factorization_recommender.RankingFactorizationRecommender.html
+        https://apple.github.io/turicreate/docs/api/generated/turicreate
 
         Parameters
         ----------
