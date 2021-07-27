@@ -17,8 +17,8 @@ class QueryModel(tf.keras.Model):
         Build embedding layer for create a vocabulary that maps a raw
         feature value to an integer to lookup corresponding embeddings in the
         embedding tables. Preprocessing layer is applied to capture user
-        viewing time. This framework can be expanded to include other similar 
-        preprocessed features. 
+        viewing time. This framework can be expanded to include other similar
+        preprocessed features.
 
         Parameters
         ----------
@@ -85,7 +85,7 @@ class CandidateModel(tf.keras.Model):
             dimensionality of the candidate representation; Higher values will
             correspond  to models that may be more accurate, but prone to
             overfitting.
-        max_tokens:int 
+        max_tokens:int
             maximum tokens for text vectorization embedding layer
         """
         super().__init__()
