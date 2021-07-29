@@ -88,18 +88,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
-name = "attr"
-version = "0.3.1"
-description = "Simple decorator to set attributes of target function or class in a DRY way."
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "attrs"
 version = "21.2.0"
 description = "Classes Without Boilerplate"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -233,22 +225,16 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "coremltools"
-version = "4.1"
+version = "3.3"
 description = "Community Tools for Core ML"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-attr = "*"
-attrs = "*"
-numpy = ">=1.14.5,<1.20"
-packaging = "*"
+numpy = ">=1.14.5"
 protobuf = ">=3.1.0"
-scipy = "*"
 six = ">=1.10.0"
-sympy = "*"
-tqdm = "*"
 
 [[package]]
 name = "cycler"
@@ -790,18 +776,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "mpmath"
-version = "1.2.1"
-description = "Python library for arbitrary-precision floating-point arithmetic"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.extras]
-develop = ["pytest (>=4.6)", "pycodestyle", "pytest-cov", "codecov", "wheel"]
-tests = ["pytest (>=4.6)"]
-
-[[package]]
 name = "mypy-extensions"
 version = "0.4.3"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
@@ -969,7 +943,7 @@ tests = ["pytest", "pytest-cov", "pytest-pep8"]
 name = "packaging"
 version = "21.0"
 description = "Core utilities for Python packages"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -1377,17 +1351,6 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "sympy"
-version = "1.8"
-description = "Computer algebra system (CAS) in Python"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-mpmath = ">=0.19"
-
-[[package]]
 name = "tensorboard"
 version = "2.5.0"
 description = "TensorBoard lets you watch Tensors Flow"
@@ -1535,22 +1498,6 @@ optional = false
 python-versions = ">= 3.5"
 
 [[package]]
-name = "tqdm"
-version = "4.61.2"
-description = "Fast, Extensible Progress Meter"
-category = "main"
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-
-[package.dependencies]
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
-
-[package.extras]
-dev = ["py-make (>=0.1.0)", "twine", "wheel"]
-notebook = ["ipywidgets (>=6)"]
-telegram = ["requests"]
-
-[[package]]
 name = "traitlets"
 version = "5.0.5"
 description = "Traitlets Python configuration system"
@@ -1651,7 +1598,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "c58f9ba5585bde3877c1c76b5955d994b1685f635a1a0db262d641eeeea01c89"
+content-hash = "f9f4211db6e28bfcb9c513410ce27805e6786d51412b484e4fda6aaa370bd591"
 
 [metadata.files]
 absl-py = [
@@ -1705,10 +1652,6 @@ async-generator = [
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
-]
-attr = [
-    {file = "attr-0.3.1-py2-none-any.whl", hash = "sha256:0b1aaddb85bd9e9c4bd75092f4440d6616ff40b0df0437f00771871670f7c9fd"},
-    {file = "attr-0.3.1.tar.gz", hash = "sha256:9091548058d17f132596e61fa7518e504f76b9a4c61ca7d86e1f96dbf7d4775d"},
 ]
 attrs = [
     {file = "attrs-21.2.0-py2.py3-none-any.whl", hash = "sha256:149e90d6d8ac20db7a955ad60cf0e6881a3f20d37096140088356da6c716b0b1"},
@@ -1797,31 +1740,26 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 coremltools = [
-    {file = "coremltools-4.1-cp35-none-macosx_10_12_intel.whl", hash = "sha256:414f3ef8e6e013289149be13b8fc14dd127b25155e1c51c048992bf8084890d7"},
-    {file = "coremltools-4.1-cp35-none-macosx_10_13_intel.whl", hash = "sha256:e6124add2df0865ec6b02e33492373ff12845a965a645708b4550e007325cbaf"},
-    {file = "coremltools-4.1-cp35-none-macosx_10_14_intel.whl", hash = "sha256:710bcd32ebbc26b1ad522b15aa7fbf46da041d433b0eea0d7d073c05c450e9a6"},
-    {file = "coremltools-4.1-cp35-none-macosx_10_15_intel.whl", hash = "sha256:feeeebf3dea36971c3296dce99f001b82caf63c63de50a0afcf4bb360f1e3b1e"},
-    {file = "coremltools-4.1-cp35-none-macosx_10_16_intel.whl", hash = "sha256:c5d0fff1638f4a774a3efbebd2d672f066d8b3499a6a151366f03054166e3d86"},
-    {file = "coremltools-4.1-cp35-none-manylinux1_x86_64.whl", hash = "sha256:c807b7ce9603e891a8c5502fd15101c6938b3760470d410afccad61d73b26eed"},
-    {file = "coremltools-4.1-cp36-none-macosx_10_12_intel.whl", hash = "sha256:b4c29bb328af9ea236852e172a0c4cda32836013c906fc67ba1b5e601966a818"},
-    {file = "coremltools-4.1-cp36-none-macosx_10_13_intel.whl", hash = "sha256:09ecdcf3547513746718df9a7d94f8c355e4c66cf85d5931ac63801db31dd4a3"},
-    {file = "coremltools-4.1-cp36-none-macosx_10_14_intel.whl", hash = "sha256:66fab80fd9f8ef05018acd0cf83938d5ff4e7d3bd017fce14e5e564c4ec226d1"},
-    {file = "coremltools-4.1-cp36-none-macosx_10_15_intel.whl", hash = "sha256:0b18932acd3ce1aecdd904f568878ecc265d0b6e51da3f2aadc1b3ad1791d6d1"},
-    {file = "coremltools-4.1-cp36-none-macosx_10_16_intel.whl", hash = "sha256:97946580b65d14f43b79e2a840981bc96528fdcaf9c1b235366428f848319f86"},
-    {file = "coremltools-4.1-cp36-none-manylinux1_x86_64.whl", hash = "sha256:f56061821c67697fee598f59353814ab4c9d66038855caa315f1da8f1d33a628"},
-    {file = "coremltools-4.1-cp37-none-macosx_10_12_intel.whl", hash = "sha256:f49c7616a9b61d1b7634a3b6fbb795f8c5c6061da134dff45e446236157f9cc8"},
-    {file = "coremltools-4.1-cp37-none-macosx_10_13_intel.whl", hash = "sha256:45f4b01b2b8de584010d7ed531f7b1a15549952664f4a398af578c774735f202"},
-    {file = "coremltools-4.1-cp37-none-macosx_10_14_intel.whl", hash = "sha256:5518b3084eba41f908872ee2cbf14744faaf65c0846d64f264d7ce69e45089a4"},
-    {file = "coremltools-4.1-cp37-none-macosx_10_15_intel.whl", hash = "sha256:15cfcf8232f2d2515ec41d6d8b4525dd4579e05151609a8392c5dfbe0b3091b5"},
-    {file = "coremltools-4.1-cp37-none-macosx_10_16_intel.whl", hash = "sha256:dccb636b02ae6f09fa9e7cfaa7f79ca5cb6ab6aebd3811a66fdc2f59af26d21a"},
-    {file = "coremltools-4.1-cp37-none-manylinux1_x86_64.whl", hash = "sha256:10cedcb2ef93a372ff26c7f6e50be6426f4ccbd577d4849c8cdf5a7eab2cebdb"},
-    {file = "coremltools-4.1-cp38-none-macosx_10_12_intel.whl", hash = "sha256:aca64e6c06dd37ca8d5bb3e2aa123b2df7ac7307fbefa57fd47da15c47535e31"},
-    {file = "coremltools-4.1-cp38-none-macosx_10_13_intel.whl", hash = "sha256:18d380f800332928a69f8bc5c1bdbe026441f6558b7b80e227196fe7e70df906"},
-    {file = "coremltools-4.1-cp38-none-macosx_10_14_intel.whl", hash = "sha256:1988d22fd766d325ac41aee90f0a709c5fd0808c205782ba6186aee90ab7b680"},
-    {file = "coremltools-4.1-cp38-none-macosx_10_15_intel.whl", hash = "sha256:27b5638aa2ea33ccfde4c7187b7c2baebf1218f5c3f63ec2560ef674f4cee30f"},
-    {file = "coremltools-4.1-cp38-none-macosx_10_16_intel.whl", hash = "sha256:0e75d07a50ba588d06175b0a15d082c5c0f1d0eb732337d3a3f764818dc712a3"},
-    {file = "coremltools-4.1-cp38-none-manylinux1_x86_64.whl", hash = "sha256:7152f654ed769120011fbf70da1bf96010c9c7705b11bfb8a6c934069a7cd0a8"},
-    {file = "coremltools-4.1.tar.gz", hash = "sha256:cd652282431ba6b9b62744888138fb24289dcc0ef0811a8bb6ab85f9b4f6dffd"},
+    {file = "coremltools-3.3-cp27-none-macosx_10_12_intel.whl", hash = "sha256:96bbfe6d8d4d622466ef0015454adcde85df67f6c2a4c2888046259b02226e35"},
+    {file = "coremltools-3.3-cp27-none-macosx_10_13_intel.whl", hash = "sha256:905472907e52cc0c245510c4191999d0326c822ca44b563a706f3c4dee7b66ba"},
+    {file = "coremltools-3.3-cp27-none-macosx_10_14_intel.whl", hash = "sha256:88e97286f69b2c0bbccfb9cd95fc182864c7522adf57d3c8d9a8519171c8e9dc"},
+    {file = "coremltools-3.3-cp27-none-macosx_10_15_intel.whl", hash = "sha256:b89dcb5f04e207fcf0c55dc9fdd18bd6cc51858e8235d939c0e63f9843f609a8"},
+    {file = "coremltools-3.3-cp27-none-manylinux1_x86_64.whl", hash = "sha256:190937d6e3fa00177516f088b7e923a09021aaf1ffcf7df7b563f8f1537b829e"},
+    {file = "coremltools-3.3-cp35-none-macosx_10_12_intel.whl", hash = "sha256:9642dbde940fe67ba0a12ee18eead136c2be0007765fc4775795151f31b84266"},
+    {file = "coremltools-3.3-cp35-none-macosx_10_13_intel.whl", hash = "sha256:028d4c2ad803506d3b9c2e6f2eae6ec6e58762421a746cd42a745b1063ff136c"},
+    {file = "coremltools-3.3-cp35-none-macosx_10_14_intel.whl", hash = "sha256:c80086877f6b6165c4fdfc52594419c3cef80b352ccb8a10a93a7843ba3348f0"},
+    {file = "coremltools-3.3-cp35-none-macosx_10_15_intel.whl", hash = "sha256:af2bc780f8be984b0c0395aff3b87a615eb35d692c1059b781cddedb5106f9cb"},
+    {file = "coremltools-3.3-cp35-none-manylinux1_x86_64.whl", hash = "sha256:0ebb9671b7ff026e1ecb2347c6216f07206fb1c586ad280437e933f776d0e7f2"},
+    {file = "coremltools-3.3-cp36-none-macosx_10_12_intel.whl", hash = "sha256:3ad7aa7588d16800bdb4c693e13865d17985668449a7047f68f944e18e8610a3"},
+    {file = "coremltools-3.3-cp36-none-macosx_10_13_intel.whl", hash = "sha256:af5efaefc5a38e36c7271810f31bea3e27482ea6c626e73f9457edaa836fa0bc"},
+    {file = "coremltools-3.3-cp36-none-macosx_10_14_intel.whl", hash = "sha256:fa9bfaebe874912ced681a7ef2db17aa7a24e895d9640e7d5b43e8b1629d15ad"},
+    {file = "coremltools-3.3-cp36-none-macosx_10_15_intel.whl", hash = "sha256:c588a52396b0abe1d12f60fcb0f1706afadfbafb94797904ae531ac04da0f600"},
+    {file = "coremltools-3.3-cp36-none-manylinux1_x86_64.whl", hash = "sha256:c53deea71d41e7bb8b7214cdbbcf0effca6195c1d7bbf967b6d14b03a4458328"},
+    {file = "coremltools-3.3-cp37-none-macosx_10_12_intel.whl", hash = "sha256:8faf96f7fc3de4234da42d8f5a238492426871e03e15faedd6bb1c73ff440827"},
+    {file = "coremltools-3.3-cp37-none-macosx_10_13_intel.whl", hash = "sha256:5117eb0b19d3c6f7653370934668c7d7b6b9d136588ef22310cacf817fc12417"},
+    {file = "coremltools-3.3-cp37-none-macosx_10_14_intel.whl", hash = "sha256:0f8fb1d60d053078c0e203a2fb2dfefd1af868555358713f6d9eb6335e141a06"},
+    {file = "coremltools-3.3-cp37-none-macosx_10_15_intel.whl", hash = "sha256:56290995342308d477ed6e178b6ed8c57461c64018c3b8c7ff8390cb3312212e"},
+    {file = "coremltools-3.3-cp37-none-manylinux1_x86_64.whl", hash = "sha256:878eb59ec0232c0aae76f791684630694cbf8547ce44d97ecf3cdae9b9ff008c"},
 ]
 cycler = [
     {file = "cycler-0.10.0-py2.py3-none-any.whl", hash = "sha256:1d8a5ae1ff6c5cf9b93e8811e581232ad8920aeec647c37316ceac982b08cb2d"},
@@ -2174,10 +2112,6 @@ mccabe = [
 mistune = [
     {file = "mistune-0.8.4-py2.py3-none-any.whl", hash = "sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4"},
     {file = "mistune-0.8.4.tar.gz", hash = "sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e"},
-]
-mpmath = [
-    {file = "mpmath-1.2.1-py3-none-any.whl", hash = "sha256:604bc21bd22d2322a177c73bdb573994ef76e62edd595d17e00aff24b0667e5c"},
-    {file = "mpmath-1.2.1.tar.gz", hash = "sha256:79ffb45cf9f4b101a807595bcb3e72e0396202e0b1d25d689134b48c4216a81a"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
@@ -2677,10 +2611,6 @@ sniffio = [
     {file = "sniffio-1.2.0-py3-none-any.whl", hash = "sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663"},
     {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
 ]
-sympy = [
-    {file = "sympy-1.8-py3-none-any.whl", hash = "sha256:3b0b3776e357f789951bb14776c6a841f931680f20d5f8fe55977885657c9b7a"},
-    {file = "sympy-1.8.tar.gz", hash = "sha256:1ca588a9f6ce6a323c5592f9635159c2093572826668a1022c75c75bdf0297cb"},
-]
 tensorboard = [
     {file = "tensorboard-2.5.0-py3-none-any.whl", hash = "sha256:e167460085b6528956b33bab1c970c989cdce47a6616273880733f5e7bde452e"},
 ]
@@ -2774,10 +2704,6 @@ tornado = [
     {file = "tornado-6.1-cp39-cp39-win32.whl", hash = "sha256:d3d20ea5782ba63ed13bc2b8c291a053c8d807a8fa927d941bd718468f7b950c"},
     {file = "tornado-6.1-cp39-cp39-win_amd64.whl", hash = "sha256:548430be2740e327b3fe0201abe471f314741efcb0067ec4f2d7dcfb4825f3e4"},
     {file = "tornado-6.1.tar.gz", hash = "sha256:33c6e81d7bd55b468d2e793517c909b139960b6c790a60b7991b9b6b76fb9791"},
-]
-tqdm = [
-    {file = "tqdm-4.61.2-py2.py3-none-any.whl", hash = "sha256:5aa445ea0ad8b16d82b15ab342de6b195a722d75fc1ef9934a46bba6feafbc64"},
-    {file = "tqdm-4.61.2.tar.gz", hash = "sha256:8bb94db0d4468fea27d004a0f1d1c02da3cdedc00fe491c0de986b76a04d6b0a"},
 ]
 traitlets = [
     {file = "traitlets-5.0.5-py3-none-any.whl", hash = "sha256:69ff3f9d5351f31a7ad80443c2674b7099df13cc41fc5fa6e2f6d3b0330b0426"},

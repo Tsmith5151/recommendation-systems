@@ -1,7 +1,7 @@
 import json
 import requests
 import flask
-from recommender.parse import get_parser
+import argparse
 
 
 def similarity(user_id: str, host: str = "0.0.0.0", port: int = 5000):
@@ -26,5 +26,18 @@ def similarity(user_id: str, host: str = "0.0.0.0", port: int = 5000):
 
 
 if __name__ == "__main__":
-    args = get_parser().parse_args()
+    parser = argparse.ArgumentParser(description="Sample Recommendation Application")
+    parser.add_argument(
+        "--hostname",
+        default="0.0.0.0",
+        type=str,
+        help="hostname for serving Flask application",
+    )
+    parser.add_argument(
+        "--port",
+        default=5000,
+        type=int,
+        help="port for serving Flask application",
+    )
+    args = parser.parse_args()
     similarity(args.user_id, args.hostname, args.port)

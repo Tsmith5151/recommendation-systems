@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from server import app
 from flask import request
-from recommender.database import utils as db_main
+from database import utils as db_main
 
 # Environment Variable
 # import os

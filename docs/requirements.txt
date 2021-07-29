@@ -9,4 +9,4 @@ numpy
 flask
 PyYAML
 scikit-learn
-turicreate
+turicreate==6.4.1
