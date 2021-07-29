@@ -13,9 +13,9 @@ are `Turi Create` and `Tensorflow`.
 
 ## Examples
 
-- Build a `Matrix Factorization` recommendation engine to return a collection of
-  `k` most similar users whom's profile/interactions are similar to an input
-  user `x`. 
+- Build a Matrix Factorization recommendation engine using Tensorflow (e.g. Keras API)
+to rank a collection of `k` most similar users whom's profile/interactions are similar to an input
+user `x`. 
 
 - Train a [`two-tower DNN
   Retrieval Model`](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/6c8a86c981a62b0126a11896b7f6ae0dae4c3566.pdf)
