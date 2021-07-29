@@ -1,34 +1,7 @@
-## Background 
 
-The objective of this project is to build an recommendation system which
-returns a collection of users whom share similar profiles and interactions with
-a given user of interest. The dataset consists of anonymized user data captured
-from an online platform that includes features such as user interests,
-assessment scores, course viewing details, and tagged categories. 
-
-For this project, there were two methods explored for recommending users whom
-share similar patterns. The first approach is a simplified version of
-collaborative filtering where we generate an interaction matrix for all users
-and the items they've interacted with (e.g. tags, view times, assessment
-scores). We then build a user-item matrix and to compute a pairwise cosine
-distance across all users and in return is utilized to rank the top users that
-are most similar to a given user. The second approach consists of Factorization
-Machines - which is basically a generalization of Matrix Factorization. This
-approach learns a set of latent factors for each user and item and then uses
-them to rank recommended users according to the likelihood of observing those
-(user, item) pairs. This method produces the nearest users based on the cosine 
-similarity between latent user factors.
-
-The result from the recommender application can be accessible via a RESTful
-API that is hosted locally (for now). The endpoint is based on the `Matrix
-Factorization` method implemented and will take a given user's unique ID as the
-input and return the top 'n' most similar users. For this project we
-will be using Flask-RESTful, which is just an extension for Flask that adds
-support for quickly building REST APIs in Python.
-
-_______
 ## Data 
-This document is accompanied by four csv files with the following tables:
+The dataset we will be working with can be accessed from the `data` directory
+within the project root. Here's a breakdown of the available data:
 
 **user_interests:**
 
@@ -97,42 +70,6 @@ the activated virtual environment by running:
 ```
 make build-env
 ```
-
-______
-## Data Store
-
-In terms of the backend database used for the application, `SQLite3` will be
-the default choice. For further details on installing the SQLite3 database, 
-please refer to the documentation [here](https://www.tutorialspoint.com/sqlite/sqlite_installation.htm).
-
-______
-## Run Pipeline
-
-To run the `User-Similarity Pipeline`, the following command can be
-executed from a command line within the project root dir:
-
-
-**Method 1: Ranking Users based on Cosine Similarity**
-```
-python -m recommender.pipeline --env dev --method similarity --results_table user_ranking 
-```
-
-**Method 2: Ranking Users based on Matrix Factorization**
-
-```
-python -m recommender.pipeline --env dev --method factorization --results_table user_ranking 
-```
-
-The recommender pipeline can easily be scheduled as a job (e.g. airflow) in
-order to frequently update the user similarity ranking table. Current benchmark
-metrics for the pipeline to execute successfully with 10k users on a single
-8-core 16GB CPU machine is roughly 10 minutes. 
-
->**Note:** for a complete list of the input args to execute the pipeline, you
-can run `python -m recommender.pipeline --help`. By default, the `env` argument is set to
-the development environment. For production purposes, the `prod` flag can be 
-passed, however further configuration and database security features would need
-to be incorporated. 
 
 _______
 ## RESTful API

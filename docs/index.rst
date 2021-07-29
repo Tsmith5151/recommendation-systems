@@ -1,5 +1,5 @@
-User Similarity Recommendation System
-========================================
+Toolbox for Building Recommendation Systems 
+===========================================
 
 Overview
 ~~~~~~~~
@@ -7,9 +7,5 @@ Overview
 .. toctree::
    overview/
 
-Source Code 
-~~~~~~~~~~~
-
 .. toctree::
-   recommender/index.rst
-   server/index.rst
+   recommenders/index.rst
