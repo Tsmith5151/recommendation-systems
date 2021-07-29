@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "user-recommender-system"
+name = "recommender-engine-toolbook"
 version = "0.1.0"
-description = "Collaborative Filtering - User Recommender Application"
+description = "Collaborative Filtering - Recommender Application"
 authors = ["Trace Smith <tsmith5151@gmail.com>"]
 
 [tool.poetry.dependencies]
@@ -13,8 +13,8 @@ scikit-learn = "0.24.2"
 tensorflow = "^2.5.0"
 tensorflow-recommenders = "^0.5.2"
 colorama = "^0.4.4"
-coremltools = "^4.1"
 matplotlib = "^3.4.2"
+coremltools = "4.0"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "3.0.16"
