@@ -1,5 +1,5 @@
-Recommender Systems
-*******************
+Recommender Algorithms
+**********************
 
 Simple Recommender (e.g. Cosine Similarity)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
