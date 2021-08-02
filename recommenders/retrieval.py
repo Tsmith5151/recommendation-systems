@@ -72,7 +72,7 @@ class CandidateModel(tf.keras.Model):
         """
         Candidate Tower: build a set of layers that describe how raw candidate
         features to be transformed into numerical userrepresentations.
-        
+
         Preprocessing layer is applied to capture the fact
         that courses with very similar titles are likely to belong to the same
         series our courses; first step is to apply text tokenization (e.g.
@@ -294,7 +294,7 @@ def retrieval_main(
     )
 
     # Build Retrieval Model
-    model = RetrievalModel(query, candidate, unique_user_ids, unique_title_ids)
+    model = CandidateGeneration(query, candidate, unique_user_ids, unique_title_ids)
     model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=learning_rate))
 
     # fit model
