@@ -1,4 +1,6 @@
-# Deep Neural Network: Retrieve/Rank Two-Tower Model
+# Standard two-tower Retrieval model using Tensorflow
+# RetrievalModel can be extended for more complex
+# architectures.
 import os
 import tempfile
 import numpy as np
@@ -69,8 +71,9 @@ class CandidateModel(tf.keras.Model):
     ):
         """
         Candidate Tower: build a set of layers that describe how raw candidate
-        features to be transformed into numerical user
-        representations.Preprocessing layer is applied to capture the fact
+        features to be transformed into numerical userrepresentations.
+        
+        Preprocessing layer is applied to capture the fact
         that courses with very similar titles are likely to belong to the same
         series our courses; first step is to apply text tokenization (e.g.
         splitting words) and followed by vocabulary learning, then finally an
@@ -124,14 +127,16 @@ class CandidateModel(tf.keras.Model):
         )
 
 
-class RetrievalModel(tfrs.models.Model):
+class CandidateGeneration(tfrs.models.Model):
     def __init__(self, query, candidate, unique_user_ids, unique_title_ids):
 
         """
-        Class to build a two-tower retrieval model
+        Candidate generator class to build a two-tower retrieval model
 
         Loss Function: maximizes the predicted user-courses affinity for
         watches observed, and minimizes it for watches that did not happen.
+        The model output is the dot product between the user_id embedding
+        and the item_id embedding.
 
         Parameters
         ----------

@@ -1,4 +1,4 @@
-# Simple Similarity Distance Based Recommender using Turicreate
+# Simple CF Recommender based on distance metrics using Turicreate
 import pandas as pd
 import turicreate as tc
 from .utils.logger import get_logger
@@ -6,7 +6,7 @@ from .utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-class SimpleRecommender:
+class CollaborativeFiltering:
     def __init__(
         self,
         name: str,
@@ -15,7 +15,7 @@ class SimpleRecommender:
         similarity_metric: str = None,
     ):
         """
-        User/Item Similarity Recommender Class based on the following
+        Collaborative Filtering Recommender Class based on the following
         similarity distance metrics: ["jaccard", "cosine", "pearson"]
 
         Source:

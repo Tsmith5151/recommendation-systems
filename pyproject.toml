@@ -15,6 +15,7 @@ tensorflow-recommenders = "^0.5.2"
 colorama = "^0.4.4"
 matplotlib = "^3.4.2"
 coremltools = "4.0"
+annoy = "^1.17.0"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "3.0.16"
