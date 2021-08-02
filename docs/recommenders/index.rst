@@ -1,40 +1,44 @@
 Recommender Algorithms
 **********************
 
-Simple Recommender (e.g. Cosine Similarity)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. autoclass:: recommenders.simple.SimpleRecommender
+Simple Collaborative Filtering Model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: recommenders.cf.CollaborativeFiltering 
 	:members:
     
+Factorization Machines
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: recommenders.factorization_machines.RankingFactorizationRecommender
+	:members:
     
 Matrix Factorization
 ~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: recommenders.mf.MatrixFactorization
+.. autoclass:: recommenders.matrix_factorization.MatrixFactorization
+	:members:
+
+.. autoclass:: recommenders.matrix_factorization.DeepMatrixFactorization
 	:members:
 
 
-Factorization Machines
-~~~~~~~~~~~~~~~~~~~~~~
+Hybrid Deep Neural Network
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: recommenders.fm.RankingFactorizationRecommender
+.. autoclass:: recommenders.hybrid.HybridRecommender
 	:members:
 
-Deep Neural Networks
-~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: recommenders.dnn.QueryModel
-	:members:
-    
-.. autoclass:: recommenders.dnn.CandidateModel
-	:members:
-    
-.. autoclass:: recommenders.dnn.RetrievalModel
+Candidate Generator (Tensorflow)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: recommenders.retrieval.QueryModel
 	:members:
     
-.. autofunction:: recommenders.dnn.train_test_split
+.. autoclass:: recommenders.retrieval.CandidateModel
+	:members:
+    
+.. autoclass:: recommenders.retrieval.CandidateGeneration
+	:members:
 
-.. autofunction:: recommenders.dnn.retrieve_topk_candidates
-
-.. autofunction:: recommenders.dnn.retrieval_main
 
