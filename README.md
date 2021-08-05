@@ -17,7 +17,7 @@ data.
 ## Getting Started
 
 For this project we will be leveraging [`poetry`](https://python-poetry.org/) to
-handle installing  dependencies and versioning. This project requires `python > 3.7.1`.
+handle installing  dependencies and versioning.
 
 To configure your environment, first initialize a virtual environment and then
 install poetry: 
