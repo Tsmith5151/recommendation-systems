@@ -26,10 +26,18 @@ install poetry:
 pip install poetry
 ```
 
-Next, to install the required libraries you can simply run:
+Next, to install the exact versions and resolving any conflicts, run the
+following command which poetry reads from the poetry.lock file. This helps
+ensure everyone is using the same versions of the dependencies. 
 
 ```
 poetry install
+```
+
+To exclude any of the development dependencies, you can also run:
+
+```
+poetry install --no-dev
 ```
 
 Please refer to the series of helper notebooks in the *examples/* for examples
