@@ -16,7 +16,7 @@ class RankingFactorizationRecommender:
         Ranking Factorization Recommender Class
 
         Source:
-        https://apple.github.io/turicreate/docs/api/generated/turicreate
+        https://apple.github.io/turicreate/docs/api/generated/turicreate.recommender.factorization_recommender.FactorizationRecommender.html
 
         Note: get_similar_users currently not supported for item similarity
         models. As a workaround, to get the neighborhood of users, train a
@@ -56,6 +56,8 @@ class RankingFactorizationRecommender:
         """Fit ranking factorization recommender to learn a set of latent
         factors for each user and item and uses them to rank recommended
         items according to the likelihood of observing those pairs.
+
+        Assumption: implicit data (e.g. solver = implicit Alternating Least Squares)
 
         Parameters
         ----------
