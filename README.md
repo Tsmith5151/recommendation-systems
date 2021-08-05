@@ -16,20 +16,29 @@ data.
 
 ## Getting Started
 
-For this project we will be leveraging [poetry](https://python-poetry.org/) to
+For this project we will be leveraging [`poetry`](https://python-poetry.org/) to
 handle installing  dependencies and versioning. This project requires `python > 3.7.1`.
 
-To configure your environment, first initialize a virtual environment and then 
-`pip install poetry`. Next, to install the required libraries you can simply
-run `poetry install`. 
+To configure your environment, first initialize a virtual environment and then
+install poetry: 
 
-Please refer to the series of helper notebooks in the `examples/` for examples
+```
+pip install poetry
+```
+
+Next, to install the required libraries you can simply run:
+
+```
+poetry install
+```
+
+Please refer to the series of helper notebooks in the *examples/* for examples
 on incorporating the recommender classes into your own projects. For the demos,
 feel free to use your own dataset or explore with the
 (movielens)[https://grouplens.org/datasets/movielens/] dataset as well.
 Currently, the examples are based off an anonymous online learning platform
 dataset that contains thousands of user/item interactions. For more details,
-please see the ".csv' files in `data/`. 
+please see the ".csv' files in *data/*. 
 
 ## Recommender Classes
 
@@ -66,10 +75,10 @@ please see the ".csv' files in `data/`.
 
 ## Model Deployment
 
-If interested in deploying your model, a basic `Flask` example is provided in
-`sever` which can be used to make a RESTful api calls to a backend datastore.
+If interested in deploying your model, a basic *Flask* example is provided in
+*sever/* which can be used to make a RESTful api calls to a backend datastore.
 This was just a quick prototype, but more to come on this section though and
-example on serving a DNN model using `Tensorflow-Serving`.  
+example on serving a DNN model using [`Tensorflow-Serving`](https://www.tensorflow.org/tfx/guide/serving).  
 
 ## Contributing
 
