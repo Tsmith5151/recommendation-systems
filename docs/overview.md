@@ -1,4 +1,32 @@
 
+## Requirements
+- Python 3.6+
+
+For this project, we will be leveraging [poetry](https://python-poetry.org/)
+for our dependency manager. To get started, create a virtual environment and install poetry:
+
+```
+pip install poetry==1.1.7
+```
+
+Next, run the following command to install all dependencies from
+`pyproject.toml`: 
+
+```
+poetry install
+```
+
+> **Note:** A quick step to configure a virtual environment and handling Python versioning
+within this project is to simply run `make penv`. For more details on using
+pyenv, check out the docs [here](https://github.com/pyenv/pyenv). Assuming
+pyenv is now configured, you can then install the required dependencies into
+the activated virtual environment by running:
+
+```
+make build-env
+```
+
+____
 ## Data 
 The dataset we will be working with can be accessed from the `data` directory
 within the project root. Here's a breakdown of the available data:
@@ -41,35 +69,6 @@ within the project root. Here's a breakdown of the available data:
 | ----------------- | ------------------------------------------------------------- |
 | course_id         | course identifier for joining to user_course_views            | 
 | course_tags       | author-applied tags to define what topics this course covers  |
-
-
-______
-## Requirements
-- Python 3.6+
-
-For this project, we will be leveraging [poetry](https://python-poetry.org/)
-for our dependency manager. To get started, create a virtual environment and install poetry:
-
-```
-pip install poetry==1.1.7
-```
-
-Next, run the following command to install all dependencies from
-`pyproject.toml`: 
-
-```
-poetry install
-```
-
-> **Note:** A quick step to configure a virtual environment and handling Python versioning
-within this project is to simply run `make penv`. For more details on using
-pyenv, check out the docs [here](https://github.com/pyenv/pyenv). Assuming
-pyenv is now configured, you can then install the required dependencies into
-the activated virtual environment by running:
-
-```
-make build-env
-```
 
 _______
 ## RESTful API
