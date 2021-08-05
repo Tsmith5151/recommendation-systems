@@ -1,4 +1,4 @@
-# Toolbox for Recommender Systems  
+# Toolbox to build Recommender Systems in Python
 
 ![CI/CD Workflow](https://github.com/tsmith5151/user-recommender/actions/workflows/ci.yaml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/user-recommender/badge/?version=latest)](https://user-recommender.readthedocs.io/en/latest/?badge=latest)
@@ -29,7 +29,7 @@ feel free to use your own dataset or explore with the
 (movielens)[https://grouplens.org/datasets/movielens/] dataset as well.
 Currently, the examples are based off an anonymous online learning platform
 dataset that contains thousands of user/item interactions. For more details,
-please see the the ".csv' files in `data/`. 
+please see the ".csv' files in `data/`. 
 
 ## Recommender Classes
 
