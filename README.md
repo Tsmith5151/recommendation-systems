@@ -43,7 +43,7 @@ poetry install --no-dev
 Please refer to the series of helper notebooks in the *examples/* for examples
 on incorporating the recommender classes into your own projects. For the demos,
 feel free to use your own dataset or explore with the
-(movielens)[https://grouplens.org/datasets/movielens/] dataset as well.
+[movielens](https://grouplens.org/datasets/movielens/) dataset as well.
 Currently, the examples are based off an anonymous online learning platform
 dataset that contains thousands of user/item interactions. For more details,
 please see the ".csv' files in *data/*. 
